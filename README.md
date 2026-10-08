@@ -1,110 +1,112 @@
-@"
 # NovaDesk — AI Customer Support Automation
 
-NovaDesk is a production-style AI customer support automation built with n8n.
+NovaDesk is an n8n-based customer support automation project I built to handle support tickets from intake through routing, escalation, human review, auto-replies, and audit logging.
 
-It automates ticket intake, AI classification, confidence-based decisioning, team routing, escalation, human review, automated email replies, and audit logging.
+The main idea behind the project is simple:
 
-## Core Features
+> AI interprets ambiguity. Rules decide. Humans handle uncertainty.
 
-- Webhook-based support ticket intake
-- Input normalization and validation
-- AI-powered ticket classification
-- Structured output parsing
-- Confidence-based routing
-- Category-based team routing
-- Critical escalation handling
-- Human review and approval workflow
-- Automated Gmail replies
-- Slack notifications
-- Ticket audit logging
-- Integration logging
-- Failure handling and fallback paths
+Instead of letting the AI control the whole workflow, NovaDesk uses AI for classification and summarization, then relies on deterministic business rules for routing and actions.
 
-## High-Level Architecture
+## What the workflow does
+
+A support ticket enters through a webhook, gets normalized and validated, then goes through AI triage.
+
+The AI returns structured information such as:
+
+- Category
+- Priority
+- Sentiment
+- Business impact
+- Confidence
+- Summary
+
+Based on the result, the workflow can:
+
+- Route the ticket to the correct team
+- Escalate critical issues
+- Send safe automatic replies
+- Send uncertain or sensitive cases to human review
+- Handle approve/reject decisions from Slack
+- Log external integrations
+- Keep an audit trail of the ticket lifecycle
+
+## Architecture
 
 ```text
-Support Form
-    |
-    v
-Webhook
-    |
-    v
-Normalize Ticket
-    |
-    v
-Validate Required Fields
-    |
-    +--> Invalid Input
-    |      |
-    |      v
-    |   Audit Log
-    |
-    v
-AI Triage
-    |
-    +--> AI Failure
-    |      |
-    |      v
-    |   Human Review Queue
-    |
-    v
-Structured Output
-    |
-    v
-Confidence Check
-    |
-    v
-Business Decisioning
-    |
-    +--> Auto Reply
-    |
-    +--> Team Routing
-    |
-    +--> Escalation
-    |
-    +--> Human Review
-            |
-            v
-       Approve / Reject
-            |
-            v
-       Audit Update
+Support Form / API
+        |
+        v
+      Webhook
+        |
+        v
+ Normalize Ticket
+        |
+        v
+ Validate Required Fields
+        |
+        +---- Invalid ----> Save Audit
+        |
+        v
+     AI Triage
+        |
+        +---- AI Failure ----> Human Review
+        |
+        v
+ Structured Output
+        |
+        v
+ Confidence / Business Rules
+        |
+        +---- Auto Reply ----> Gmail
+        |
+        +---- Team Routing --> Slack
+        |
+        +---- Escalation ----> Slack
+        |
+        +---- Human Review
+                  |
+                  v
+            Approve / Reject
+                  |
+                  v
+              Audit Update
+```
 
-Workflow Structure
-The project is split into modular n8n workflows:
-- main-workflow.json
-- Category Routing & Decisioning.json
-- human-review.json
-- human-review-approval.json
-- team-routing-notification.json
-- Auto Reply.json
-AI Decision Model
-The AI layer interprets the incoming support ticket and produces structured fields such as:
-- category
-- priority
-- sentiment
-- business impact
-- confidence
-- summary
-Business rules then determine what happens next.
-Design Principle
-AI interprets ambiguity.
-Rules decide.
-Humans handle uncertainty.
-Confidence Logic
-Typical confidence logic:
->= 0.85
-Safe for automated response where business rules allow it.
+## Workflow structure
 
->= 0.65 and < 0.85
-Routing allowed, but no automatic reply.
+The project is split into multiple workflows so each part has a clear responsibility.
 
-< 0.65
-Human review required.
+```text
+workflows/
+├── main-workflow.json
+├── Category Routing & Decisioning.json
+├── human-review.json
+├── human-review-approval.json
+├── team-routing-notification.json
+└── Auto Reply.json
+```
 
-Main Ticket Categories
-- general_question
+### Main Workflow
+
+Handles:
+
+- Ticket intake
+- Normalization
+- Validation
+- AI triage
+- Confidence checks
+- Escalation decisions
+- Human review decisions
+- Auto-reply decisions
+- Audit creation
+
+### Category Routing & Decisioning
+
+Maps ticket categories and business rules to the appropriate destination.
+
+Examples include:
+
 - technical_issue
 - billing_issue
 - account_issue
@@ -112,146 +114,311 @@ Main Ticket Categories
 - complaint
 - cancellation
 - sales_inquiry
+- general_question
 - other
-Priority Levels
-- low
-- medium
-- high
-- critical
-Human Review
-Tickets requiring manual review are sent to Slack using an approval workflow.
-Reviewer metadata is captured:
-- review status
+
+### Human Review
+
+Sends tickets requiring manual review to Slack and waits for a reviewer response.
+
+### Human Review & Approval
+
+Processes the reviewer decision and stores:
+
+- approved / rejected status
 - reviewer name
 - reviewer ID
 - review source
 - review timestamp
-Possible review outcomes:
-approved
-rejected
 
-Escalation
-Critical tickets can be escalated to dedicated teams.
-Example:
-technical_issue
-+
-priority = critical
-+
-businessImpact = critical
-=
-technical_lead escalation
+### Team Routing & Notification
 
-Escalation events are also written to the integration log.
-Auto Reply
-High-confidence tickets that are safe for automation can trigger an automated Gmail reply.
-The workflow tracks:
-- response type
-- reply preparation time
-- email delivery status
-- first response time
-Audit Model
-NovaDesk uses two audit layers.
-support_ticket_audit
-Tracks business state and ticket lifecycle.
-Examples:
-- ticket metadata
-- AI triage output
-- route
-- status
-- decision reason
-- escalation
-- auto-reply state
-- human review state
-- reviewer metadata
-- final business status
-integration_log
-Tracks external integration attempts.
-Fields include:
-- ticketId
-- integration
-- integrationAction
-- integrationTarget
-- integrationStatus
-- attemptedAt
-- completedAt
-- errorMessage
-Examples:
-gmail / auto_reply
-slack / team_notification
-slack / escalation_notification
-slack / human_review_notification
+Sends Slack notifications to the relevant team or escalation channel.
 
-Failure Handling
-The workflow includes controlled failure paths for cases such as:
-- invalid ticket input
+### Auto Reply
+
+Prepares and sends customer replies through Gmail when automation is allowed.
+
+## Confidence logic
+
+The workflow uses confidence as one input into business decisioning.
+
+```text
+confidence >= 0.85
+Potentially eligible for automatic reply when business rules allow it.
+
+0.65 <= confidence < 0.85
+Routing is allowed, but automatic replies are disabled.
+
+confidence < 0.65
+Human review is required.
+```
+
+Confidence is not treated as the only decision factor. Category, priority, business impact, escalation rules, and human-review rules are also considered.
+
+## Human-in-the-loop
+
+NovaDesk includes a human review layer for cases where automation should not make the final decision.
+
+The Slack review flow captures the reviewer response and updates the audit record.
+
+Example final states:
+
+```text
+reviewed_approved
+reviewed_rejected
+waiting_human_review
+waiting_human_review_notification_failed
+```
+
+The notification status is tracked separately from the human decision:
+
+```text
+humanReviewNotificationStatus = sent / failed
+humanReviewStatus = approved / rejected
+```
+
+This avoids mixing delivery state with business decision state.
+
+## Escalation
+
+Critical tickets can be escalated separately from human review.
+
+For example, a critical technical issue with major business impact can be routed to:
+
+```text
+technical_lead
+```
+
+and trigger a Slack escalation notification.
+
+Escalation events are also recorded in the integration log.
+
+## Auto Reply
+
+High-confidence tickets that are safe for automation can receive an automatic Gmail response.
+
+The workflow tracks information such as:
+
+- responseType
+- autoReplied
+- replyPreparedAt
+- firstResponseAt
+
+Failed email delivery follows a separate failure path instead of silently succeeding.
+
+## Audit design
+
+NovaDesk uses two main audit tables.
+
+### support_ticket_audit
+
+Stores the business state of the ticket.
+
+It includes:
+
+- Customer and ticket information
+- AI classification
+- Priority and business impact
+- Routing
+- Current/final business status
+- Escalation state
+- Auto-reply state
+- Human-review notification state
+- Human-review decision
+- Reviewer metadata
+- Audit timestamps
+
+### integration_log
+
+Stores attempts to communicate with external services.
+
+Typical fields:
+
+```text
+ticketId
+integration
+integrationAction
+integrationTarget
+integrationStatus
+attemptedAt
+completedAt
+errorMessage
+```
+
+Example actions:
+
+```text
+auto_reply
+team_notification
+escalation_notification
+human_review_notification
+```
+
+## Failure handling
+
+I added explicit paths for failures instead of assuming every external service will always work.
+
+Current handled scenarios include:
+
+- Invalid ticket input
 - AI provider failure
+- Low-confidence AI result
 - Slack notification failure
 - Gmail delivery failure
-- low-confidence AI output
-AI failures are routed to human review instead of terminating the entire business process.
-Example Input
+
+If AI triage fails, the ticket is routed to human review instead of terminating the whole business process.
+
+## Example request
+
+```json
 {
   "name": "Omar Hassan",
   "email": "customer@example.com",
   "subject": "Production system is completely down",
   "message": "Our production system is unavailable for all users and business operations have stopped completely."
 }
+```
 
-Tested Scenarios
-- General question → Auto reply
-- Critical technical issue → Escalation
-- Human review → Approve
-- Human review → Reject
-- Invalid input → Rejected before AI
-- AI failure → Human review fallback
-- Slack notification
+## Scenarios tested during development
+
+The project has been tested with scenarios including:
+
+- General question → automatic reply
+- Critical technical issue → escalation
+- Human review → approve
+- Human review → reject
+- Invalid input → rejected before AI processing
+- AI failure → human-review fallback
+- Slack notifications
 - Gmail delivery
 - Ticket audit updates
 - Integration logging
-Security Notes
-Sensitive credentials are not stored in the repository.
-n8n credentials should be configured inside the n8n credential manager.
-Do not hard-code:
-- API keys
-- OAuth tokens
-- passwords
-- webhook secrets
-- private customer data
-Local Development
-NovaDesk was developed using:
-Windows
-Docker Desktop
-n8n
-Docker Compose
-ngrok
-Slack
-Gmail
+
+## Local development setup
+
+The project was developed locally using:
+
+- n8n
+- Docker Desktop
+- Docker Compose
+- Slack
+- Gmail
+- Gemini
+- ngrok for local webhook callbacks
+
+The local n8n instance runs inside Docker rather than as a direct Windows installation.
 
 Typical local access:
+
+```text
 http://localhost:5678
+```
 
-ngrok can be used during development when external services need to reach local webhooks.
-Production Deployment
-A recommended production setup would be:
+## Production direction
+
+For a real client deployment, I would not depend on localhost or ngrok.
+
+A more appropriate setup would be:
+
+```text
 Ubuntu VPS
-    |
-    v
+   |
+   v
 Docker Compose
-    |
-    +--> n8n
-    |
-    +--> PostgreSQL
-    |
-    +--> Reverse Proxy
-    |
-    +--> HTTPS
+   |
+   +-- n8n
+   +-- PostgreSQL
+   +-- Reverse Proxy
+   +-- HTTPS
+```
 
-Production deployments should also include:
-- backups
-- monitoring
-- retry policies
-- secure secret management
-- rate-limit handling
-- environment separation
-Project Goal
-This project demonstrates how n8n can be used as an automation orchestration layer for a production-style AI customer support workflow with deterministic business logic, human-in-the-loop controls, auditability, and external integrations.
+Production deployment should also include:
+
+- Persistent backups
+- Environment-based secrets
+- Monitoring and alerts
+- Retry/backoff policies
+- Rate-limit handling
+- HTTPS
+- Separate development and production environments
+
+## Security
+
+No API keys, OAuth tokens, passwords, or other secrets should be committed to this repository.
+
+Credentials should be configured through n8n's credential management system or environment variables.
+
+Before publishing workflow exports, always check for manually entered:
+
+- Authorization headers
+- Tokens
+- Passwords
+- Private webhook URLs
+- Customer data
+
+## Repository structure
+
+```text
+NovaDesk/
+├── workflows/
+├── docs/
+│   ├── screenshots/
+│   └── test-cases.md
+├── samples/
+├── README.md
+├── .gitignore
+└── LICENSE
+```
+
+## Why I built this
+
+I built NovaDesk as a portfolio project to practice production-style automation rather than simple app-to-app workflows.
+
+The focus was on combining:
+
+- n8n workflow design
+- APIs and webhooks
+- AI classification
+- Deterministic business rules
+- Human-in-the-loop controls
+- External integrations
+- Error handling
+- Auditability
+- Modular sub-workflows
+
+The project is designed as a learning and portfolio system, not as a finished commercial SaaS product.
+
+![NovaDesk Architecture](docs/screenshots/novadesk-architecture.png)
+
+## Workflow Screenshots
+
+### Main Workflow
+
+![NovaDesk Main Workflow](docs/screenshots/NovaDesk%20-%20Main%20Workflow.png)
+
+### Category Routing & Decisioning
+
+![Category Routing & Decisioning](docs/screenshots/NovaDesk%20%E2%80%94%20Category%20Routing%20%26%20Decisioning.png)
+
+### Human Review
+
+![Human Review](docs/screenshots/NovaDesk%20-%20Human%20Review.png)
+
+### Human Review & Approval
+
+![Human Review & Approval](docs/screenshots/NovaDesk%20%E2%80%94%20Human%20Review%20%26%20Approval.png)
+
+### Team Routing & Notification
+
+![Team Routing & Notification](docs/screenshots/NovaDesk%20%E2%80%94%20Subflow%20%E2%80%94%20Team%20Routing%20%26%20Notification.png)
+
+### Auto Reply
+
+![Auto Reply](docs/screenshots/NovaDesk%20%E2%80%94%20Auto%20Reply.png)
+
+## Test Cases
+
+Detailed test scenarios are documented here:
+
+[View NovaDesk Test Cases](docs/test-cases.md)
