@@ -1,0 +1,2231 @@
+{
+  "name": "NovaDesk - Main Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "support-ticket",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        80,
+        -1040
+      ],
+      "id": "1cc4793f-e656-4b5f-b93a-fb84896fcbe7",
+      "name": "Webhook",
+      "webhookId": "9f15fc32-d89a-4eb0-a81e-91d64464d2e7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "79d7a19c-0a30-4f19-bd9b-e836e70e3b2d",
+              "name": "ticketId",
+              "value": "={{ 'TKT-' + $now.toMillis() }}",
+              "type": "string"
+            },
+            {
+              "id": "1a8ffe19-7491-4e2f-87b1-07fb3faedf04",
+              "name": "source",
+              "value": "support_form",
+              "type": "string"
+            },
+            {
+              "id": "f78bfc63-02ce-43ec-850f-cdfee661f213",
+              "name": "customerName",
+              "value": "={{ $json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "32ce1eb3-f790-4de9-9dba-731ab9f8c3cd",
+              "name": "customerEmail",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "44a872cb-795e-458b-ba3c-5cba6dafc95c",
+              "name": "subject",
+              "value": "={{ $json.body.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "f269019c-5808-46fe-8d80-f8516bc47f76",
+              "name": "message",
+              "value": "={{ $json.body.message }}",
+              "type": "string"
+            },
+            {
+              "id": "e4cbc208-eb11-4b8c-9b3f-65149081bec9",
+              "name": "receivedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "3f055600-0ad6-4ea7-bfc9-8d5d31694fa4",
+              "name": "status",
+              "value": "received",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        304,
+        -1040
+      ],
+      "id": "f9993ebc-c662-4eb6-b73f-790ef99540f5",
+      "name": "Normalize Ticket"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8b26a405-bc68-4679-9780-e236d997f4dc",
+              "leftValue": "={{ $json.customerEmail }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "8ce29078-f86e-4668-ae90-e6040d081d70",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "fef58d41-0775-4bf2-b0c9-2e9b56ae984b",
+              "leftValue": "={{ $json.message }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        528,
+        -1040
+      ],
+      "id": "9bc5dd52-aa2f-49c8-bfc2-5212a1de2680",
+      "name": "Validate Required Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the following customer support ticket.\n\nSubject:\n{{ $json.subject }}\n\nMessage:\n{{ $json.message }}\n\nReturn a structured classification for this ticket.\n\nAllowed categories:\ngeneral_question\ntechnical_issue\nbilling_issue\naccount_issue\nrefund_request\ncomplaint\ncancellation\nsales_inquiry\nother\n\nAllowed priority levels:\nlow\nmedium\nhigh\ncritical\n\nAllowed sentiment values:\nneutral\ncalm\nfrustrated\nangry\nsatisfied\n\nAllowed business impact values:\nlow\nmedium\nhigh\ncritical",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        752,
+        -1168
+      ],
+      "id": "0d8ea4b6-1dda-437b-8848-82bb404be0e9",
+      "name": "Basic LLM Chain",
+      "retryOnFail": true,
+      "waitBetweenTries": 3000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        768,
+        -960
+      ],
+      "id": "87219d28-b9d1-4793-915b-eb66454cd7db",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "uzmvb860eCjlIVgL",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"category\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"general_question\",\n        \"technical_issue\",\n        \"billing_issue\",\n        \"account_issue\",\n        \"refund_request\",\n        \"complaint\",\n        \"cancellation\",\n        \"sales_inquiry\",\n        \"other\"\n      ]\n    },\n    \"priority\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"low\",\n        \"medium\",\n        \"high\",\n        \"critical\"\n      ]\n    },\n    \"sentiment\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"neutral\",\n        \"calm\",\n        \"frustrated\",\n        \"angry\",\n        \"satisfied\"\n      ]\n    },\n    \"businessImpact\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"low\",\n        \"medium\",\n        \"high\",\n        \"critical\"\n      ]\n    },\n    \"confidence\": {\n      \"type\": \"number\",\n      \"minimum\": 0,\n      \"maximum\": 1\n    },\n    \"summary\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"category\",\n    \"priority\",\n    \"sentiment\",\n    \"businessImpact\",\n    \"confidence\",\n    \"summary\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        -960
+      ],
+      "id": "39529ac3-e3a5-4e10-b2c8-4d291c5678ac",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "25d2a61e-901d-43bb-bce7-9d56f4444694",
+              "name": "ticketId",
+              "value": "={{ $('Normalize Ticket').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "cb719001-0ca9-4a32-a35e-6e331669f485",
+              "name": "customerName",
+              "value": "={{ $('Normalize Ticket').item.json.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "ecd2e538-b93c-4afd-bcc2-b50686fc0ca0",
+              "name": "customerEmail",
+              "value": "={{ $('Normalize Ticket').item.json.customerEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "44b8b99e-f496-47b9-b10a-3d337ec53e0d",
+              "name": "source",
+              "value": "={{ $('Normalize Ticket').item.json.source }}",
+              "type": "string"
+            },
+            {
+              "id": "e882cabd-7a40-44bb-bfd6-441037178c0f",
+              "name": "subject",
+              "value": "={{ $('Normalize Ticket').item.json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "a56b6a7c-fe4a-4046-8bd0-efbd7f6296fb",
+              "name": "message",
+              "value": "={{ $('Normalize Ticket').item.json.message }}",
+              "type": "string"
+            },
+            {
+              "id": "b8c00559-fe24-429c-b644-df37408a207b",
+              "name": "status",
+              "value": "=triaged",
+              "type": "string"
+            },
+            {
+              "id": "e210b90c-9ed0-4930-a012-778f36761e19",
+              "name": "category",
+              "value": "={{ $json.output.category }}",
+              "type": "string"
+            },
+            {
+              "id": "dd39117a-c00e-4b70-9fd4-2bbd0a5343e2",
+              "name": "priority",
+              "value": "={{ $json.output.priority }}",
+              "type": "string"
+            },
+            {
+              "id": "31607c4b-140f-474b-ab44-0fc8cf7d3510",
+              "name": "sentiment",
+              "value": "={{ $json.output.sentiment }}",
+              "type": "string"
+            },
+            {
+              "id": "b26bdccd-025a-404b-afb7-7d1b5771d550",
+              "name": "businessImpact",
+              "value": "={{ $json.output.businessImpact }}",
+              "type": "string"
+            },
+            {
+              "id": "d20ba4fd-75d9-41b2-b8b3-5af0fdb0961e",
+              "name": "confidence",
+              "value": "={{ $json.output.confidence }}",
+              "type": "number"
+            },
+            {
+              "id": "b2fcffcf-7067-45e1-afc7-52148a5f9e1c",
+              "name": "summary",
+              "value": "={{ $json.output.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "f003ed01-e9bb-4c7a-9d28-0d1755c708f4",
+              "name": "receivedAt",
+              "value": "={{ $('Normalize Ticket').item.json.receivedAt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1104,
+        -1168
+      ],
+      "id": "af4f0406-42c6-4998-a977-0c409b6b34b4",
+      "name": "Build Triaged Ticket"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "34d4474c-27ad-498f-94b3-f3e8b04730bd",
+              "leftValue": "={{ $json.confidence }}",
+              "rightValue": 0.65,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1328,
+        -1168
+      ],
+      "id": "2ecb0db3-f3d6-4ba9-9497-feaa8854e1e3",
+      "name": "AI Confidence Acceptable?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "human_review_queue",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "=null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "waiting_human_review",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Low AI confidence requires human review.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2000,
+        -688
+      ],
+      "id": "bb8a5770-8630-4539-abc9-31b9080221bb",
+      "name": "Set Low Confidence Decision"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "127ff0eb-b439-4a4d-87d8-235b961427ba",
+              "leftValue": "={{ $json.escalated }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1776,
+        -1456
+      ],
+      "id": "8362458a-b63a-4400-8ea8-00ddccad00bd",
+      "name": "Escalation Required?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5126f5ae-49b6-4c49-b6bf-125d38bf98a6",
+              "name": "escalationStatus",
+              "value": "pending_notification",
+              "type": "string"
+            },
+            {
+              "id": "06987715-1aaa-4f48-809a-605674672b68",
+              "name": "escalationCreatedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "60d7d0b5-d13b-40b5-9e08-3c18dfa50fb7",
+              "name": "escalationMessage",
+              "value": "={{ 'URGENT: ' + $json.priority.toUpperCase() + ' ' + $json.category + ' ticket ' + $json.ticketId + ' requires attention from ' + $json.escalationTarget }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2000,
+        -1552
+      ],
+      "id": "5e392602-6708-49cc-89d7-e5c48e14fca3",
+      "name": "Prepare Escalation"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c7e66789-36cc-4e7c-bd32-ab58e32e68ea",
+              "leftValue": "={{ $json.humanReviewRequired }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2224,
+        -1024
+      ],
+      "id": "5d04f5da-00d5-4c3b-82cb-bfdb0a54db52",
+      "name": "Human Review Required?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f31175a-8711-498d-a308-2c56954049a8",
+              "name": "reviewStatus",
+              "value": "pending",
+              "type": "string"
+            },
+            {
+              "id": "19fe36d8-3c06-4369-848e-bfd958b27f30",
+              "name": "reviewQueue",
+              "value": "human_review_queue",
+              "type": "string"
+            },
+            {
+              "id": "bd86bd39-43bc-4212-92d7-549fdd6d678f",
+              "name": "reviewCreatedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "e0a44605-fbc4-4883-96dd-d8df9601ac9f",
+              "name": "reviewReason",
+              "value": "={{ $json.decisionReason }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3248,
+        -1056
+      ],
+      "id": "2002c6da-900c-45b9-92af-ee8bf13f6e6d",
+      "name": "Prepare Human Review"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "dfefaa20-9b46-4af7-9b9b-9da0d1104895",
+              "leftValue": "={{ $json.autoReplyAllowed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2448,
+        -1104
+      ],
+      "id": "c79e72d7-6d9f-42b4-81d8-0d834aba0fbb",
+      "name": "Auto Reply Allowed?"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are writing a customer support reply.\n\nCustomer Name:\n{{ $json.customerName }}\n\nSubject:\n{{ $json.subject }}\n\nCustomer Message:\n{{ $json.message }}\n\nTicket Category:\n{{ $json.category }}\n\nPriority:\n{{ $json.priority }}\n\nSummary:\n{{ $json.summary }}\n\nWrite a short, professional, helpful customer support reply.\n\nWrite a short, professional customer support reply.\n\nRules:\n- Do not mention AI.\n- Use only information explicitly available in the ticket data provided above.\n- Do not invent product features, menu names, steps, policies, timelines, or instructions.\n- If the ticket asks for information that is not provided in the available data, do not guess.\n- In that case, acknowledge the request and tell the customer that the support team will provide the correct instructions.\n- Do not make financial promises.\n- Do not promise compensation.\n- Do not claim the issue is resolved unless the provided data confirms it.\n- Keep the reply concise.\n- Use a friendly professional tone.\n- Return only the reply text.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        2672,
+        -1168
+      ],
+      "id": "1c2f95c8-217d-40c3-94e2-8cb023df7597",
+      "name": "Generate Auto Reply",
+      "retryOnFail": true,
+      "waitBetweenTries": 3000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        2752,
+        -960
+      ],
+      "id": "f2612433-0022-41e2-ac2f-210a41b863b1",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "KnfFXWoSrTr3EjEj",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "741cc3aa-6e3f-4199-9b28-65807ac738fd",
+              "name": "notificationType",
+              "value": "human_review",
+              "type": "string"
+            },
+            {
+              "id": "4387e1f2-3d76-48f9-9364-edfd0c45b6d3",
+              "name": "notificationTarget",
+              "value": "={{ $json.route }}",
+              "type": "string"
+            },
+            {
+              "id": "6435a326-b267-46b4-9c6c-a37f1282e009",
+              "name": "notificationMessage",
+              "value": "={{ 'Ticket ' + $json.ticketId + ' requires human review. Route: ' + $json.route + '. Reason: ' + $json.reviewReason }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3472,
+        -1056
+      ],
+      "id": "b5abbce1-bf18-4980-bfac-01fe89db4064",
+      "name": "Prepare Human Review Notification"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C5FMAKXBR",
+          "mode": "list",
+          "cachedResultName": "support-escalations"
+        },
+        "text": "=🚨 ESCALATION ALERT  Ticket: {{ $json.ticketId }} Customer: {{ $json.customerName }} Email: {{ $json.customerEmail }}  Category: {{ $json.category }} Priority: {{ $json.priority }} Escalation Target: {{ $json.escalationTarget }}  Reason: {{ $json.decisionReason }}  Summary: {{ $json.summary }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        2736,
+        -1584
+      ],
+      "id": "eb64d8b9-9392-4adf-b359-9811bc18311a",
+      "name": "Send Escalation Alert",
+      "webhookId": "1f261dd8-0019-4119-8306-92a30d3e617b",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "15548b05-4756-4ad8-8800-5b3fbbbb2f1a",
+              "name": "auditType",
+              "value": "ticket",
+              "type": "string"
+            },
+            {
+              "id": "109cc423-98c2-4e77-a895-0987dedc6390",
+              "name": "auditAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fe1192bf-d61b-404b-87e9-eb1bcdbdc7a9",
+              "name": "auditSource",
+              "value": "business_flow",
+              "type": "string"
+            },
+            {
+              "id": "d98d3125-a5ca-4aaf-a646-185c1ba5a502",
+              "name": "finalBusinessStatus",
+              "value": "={{ $json.status }}",
+              "type": "string"
+            },
+            {
+              "id": "ec67ff5a-abb1-44ac-bc0c-a75a91ead7b3",
+              "name": "finalRoute",
+              "value": "={{ $json.route }}",
+              "type": "string"
+            },
+            {
+              "id": "f182139f-c44b-433e-926f-bdba9d320a96",
+              "name": "ticketAuditKey",
+              "value": "={{ $json.ticketId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3696,
+        -944
+      ],
+      "id": "53741735-8c35-4490-86ac-90df14e5a86c",
+      "name": "Prepare Ticket Audit"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "4hnWpGBxCwBz6oeH",
+          "mode": "list",
+          "cachedResultName": "support_ticket_audit",
+          "cachedResultUrl": "/projects/rurF5jkLGoYPPdmg/datatables/4hnWpGBxCwBz6oeH"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "humanReviewRequired": "={{ $json.humanReviewRequired }}",
+            "escalated": "={{ $json.escalated }}",
+            "category": "={{ $json.category }}",
+            "priority": "={{ $json.priority }}",
+            "sentiment": "={{ $json.sentiment || null }}",
+            "businessImpact": "={{ $json.businessImpact || null }}",
+            "confidence": "={{ $json.confidence ?? null }}",
+            "summary": "={{ $json.summary || null }}",
+            "status": "={{ $json.status }}",
+            "decisionReason": "={{ $json.decisionReason }}",
+            "auditType": "={{ $json.auditType }}",
+            "auditAt": "={{ $json.auditAt }}",
+            "auditSource": "={{ $json.auditSource }}",
+            "finalBusinessStatus": "={{ $json.finalBusinessStatus }}",
+            "ticketAuditKey": "={{ $json.ticketAuditKey }}",
+            "finalRoute": "={{ $json.route }}",
+            "route": "={{ $json.route }}",
+            "autoReplyAllowed": "={{ $json.autoReplyAllowed }}",
+            "customerEmail": "={{ $json.customerEmail }}",
+            "source": "={{ $json.source }}",
+            "subject": "={{ $json.subject }}",
+            "message": "={{ $json.message }}",
+            "receivedAt": "={{ $json.receivedAt }}",
+            "auditVersion": "v1",
+            "responseType": "={{ $json.responseType ||null }}",
+            "autoReplied": "={{ $json.autoReplied || null}}",
+            "replyPreparedAt": "={{ $json.replyPreparedAt|| null }}",
+            "customerName": "={{ $json.customerName }}",
+            "firstResponseAt": "={{ $json.firstResponseAt || null }}",
+            "lastUpdatedAt": "={{ $json.lastUpdatedAt || null }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "sentiment",
+              "displayName": "sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "businessImpact",
+              "displayName": "businessImpact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "confidence",
+              "displayName": "confidence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "route",
+              "displayName": "route",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "decisionReason",
+              "displayName": "decisionReason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "auditType",
+              "displayName": "auditType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "autoReplyAllowed",
+              "displayName": "autoReplyAllowed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewRequired",
+              "displayName": "humanReviewRequired",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "escalated",
+              "displayName": "escalated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "auditAt",
+              "displayName": "auditAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "auditSource",
+              "displayName": "auditSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "finalBusinessStatus",
+              "displayName": "finalBusinessStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "finalRoute",
+              "displayName": "finalRoute",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ticketAuditKey",
+              "displayName": "ticketAuditKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "customerName",
+              "displayName": "customerName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "customerEmail",
+              "displayName": "customerEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "receivedAt",
+              "displayName": "receivedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "responseType",
+              "displayName": "responseType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "autoReplied",
+              "displayName": "autoReplied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "replyPreparedAt",
+              "displayName": "replyPreparedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "firstResponseAt",
+              "displayName": "firstResponseAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "auditVersion",
+              "displayName": "auditVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewStatus",
+              "displayName": "humanReviewStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewedAt",
+              "displayName": "reviewedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewedBy",
+              "displayName": "reviewedBy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewedById",
+              "displayName": "reviewedById",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewSource",
+              "displayName": "reviewSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3920,
+        -944
+      ],
+      "id": "7d5e88a2-f9ee-4029-bcc5-1d895a9e6934",
+      "name": "Save Ticket Audit"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "wUriwo7NiKwF0EQM",
+          "mode": "list",
+          "cachedResultName": "integration_log",
+          "cachedResultUrl": "/projects/rurF5jkLGoYPPdmg/datatables/wUriwo7NiKwF0EQM"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ticketId": "={{ $json.ticketId }}",
+            "integrationTarget": "={{ $json.integrationTarget }}",
+            "integrationAction": "={{ $json.integrationAction }}",
+            "integrationStatus": "={{ $json.integrationStatus ?? $json.slackStatus }}",
+            "attemptedAt": "={{ $json.attemptedAt ?? $json.slackSentAt }}",
+            "integration": "={{ $json.integration ?? \"slack\"}}",
+            "completedAt": "={{ $json.completedAt ?? $now }}",
+            "errorMessage": "={{ $json.errorMessage?? \"\" }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ticketId",
+              "displayName": "ticketId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "integration",
+              "displayName": "integration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "integrationAction",
+              "displayName": "integrationAction",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "integrationTarget",
+              "displayName": "integrationTarget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "integrationStatus",
+              "displayName": "integrationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "errorMessage",
+              "displayName": "errorMessage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "attemptedAt",
+              "displayName": "attemptedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "completedAt",
+              "displayName": "completedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3248,
+        -1536
+      ],
+      "id": "feac4ccb-e0b1-499a-8717-0478e2412fd5",
+      "name": "Save Integration Log"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "138f9933-9feb-434e-9f1c-17c8570a85ed",
+              "name": "status",
+              "value": "invalid",
+              "type": "string"
+            },
+            {
+              "id": "5341536c-0d56-4bad-a8ac-aefb4a32b7b4",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "7fc51874-93d1-4807-899a-62bcd2fbacc1",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "b431ef5c-4889-407c-baed-391173c6176e",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "2a7f4a1d-5048-464e-9e13-6a21199cbeaa",
+              "name": "route",
+              "value": "rejected_input",
+              "type": "string"
+            },
+            {
+              "id": "7dcacb45-ee8a-4957-b6e2-816817f3b4a7",
+              "name": "decisionReason",
+              "value": "Missing required ticket fields.",
+              "type": "string"
+            },
+            {
+              "id": "7f29f638-aac4-4cbb-b087-4acc6a86c07b",
+              "name": "validationStatus",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "0e257e5d-e386-4aac-993e-439c89616a38",
+              "name": "validationFailedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3472,
+        -496
+      ],
+      "id": "e45b380d-4ed0-4bae-b98d-1c2d4cb9bc4f",
+      "name": "Set Invalid Ticket"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9d1f1911-a730-4c85-bc27-d32cdd6ee238",
+              "name": "route",
+              "value": "human_review_queue",
+              "type": "string"
+            },
+            {
+              "id": "c1f940de-e5e9-464d-938c-8515c3445867",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "eb2239f9-f34a-4226-a032-9f578992ab48",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "8bf17673-8d88-4a15-908d-5168189df978",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "3b63f0ce-6a7b-42ac-801c-712f2a97bfae",
+              "name": "decisionReason",
+              "value": "AI triage failed. Ticket requires human review.",
+              "type": "string"
+            },
+            {
+              "id": "9c0e5f2c-0b9f-463e-bb3a-b68481d19f56",
+              "name": "aiStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "f9538ff2-0ef2-40fc-ba6c-9bbed7dbecbb",
+              "name": "status",
+              "value": "waiting_human_review",
+              "type": "string"
+            },
+            {
+              "id": "728308a7-c0d2-4f14-94f8-3a4cb6ed3df7",
+              "name": "aiFailedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3024,
+        -352
+      ],
+      "id": "8248d69f-91e1-487a-a090-10081282f023",
+      "name": "Set AI Failure Fallback"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e4578b36-2d5c-4063-a5cf-c107f0c1ab5a",
+              "name": "status",
+              "value": "waiting_human_review",
+              "type": "string"
+            },
+            {
+              "id": "0ceb1604-5ad0-4d22-ac3c-3ed39a16c510",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "b0d01a3f-4099-4c12-a999-a1fec57f18f9",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "413703ca-25c9-48f9-96cc-aacf126bbcc0",
+              "name": "route",
+              "value": "human_review_queue",
+              "type": "string"
+            },
+            {
+              "id": "39d5c10f-84d9-4a09-ac30-1fa837d3ec6f",
+              "name": "decisionReason",
+              "value": "Auto-reply generation failed. Ticket requires human review.",
+              "type": "string"
+            },
+            {
+              "id": "cbfdee66-e7ca-4784-8203-f457a1a2b9c7",
+              "name": "autoReplyStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "b4ff15e8-2089-420e-bdfd-2b5203bc1e72",
+              "name": "autoReplyFailedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3024,
+        -1072
+      ],
+      "id": "d508c459-442e-4430-8017-eebc968342c4",
+      "name": "Set Auto Reply AI Failure"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "2dIoU7UyjSByfhyz",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/2dIoU7UyjSByfhyz",
+          "cachedResultName": "NovaDesk — Subflow — Team Routing & Notification"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        3024,
+        -864
+      ],
+      "name": "Call NovaDesk — Subflow — Team Routing & Notification",
+      "id": "a64ea75e-4291-482f-8af0-641980c1ecfe"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "1JgNukPjjkfTjFU1",
+          "mode": "list"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ticketId": "={{ $('Auto Reply Allowed?').item.json.ticketId }}",
+            "customerName": "={{ $('Auto Reply Allowed?').item.json.customerName }}",
+            "customerEmail": "={{ $('Auto Reply Allowed?').item.json.customerEmail }}",
+            "source": "={{ $('Auto Reply Allowed?').item.json.source }}",
+            "subject": "={{ $('Auto Reply Allowed?').item.json.subject }}",
+            "message": "={{ $('Auto Reply Allowed?').item.json.message }}",
+            "category": "={{ $('Auto Reply Allowed?').item.json.category }}",
+            "priority": "={{ $('Auto Reply Allowed?').item.json.priority }}",
+            "route": "={{ $('Auto Reply Allowed?').item.json.route }}",
+            "text": "={{ $json.text }}"
+          },
+          "matchingColumns": [
+            "ticketId",
+            "customerName",
+            "customerEmail",
+            "source",
+            "subject",
+            "message",
+            "category",
+            "priority",
+            "route",
+            "text"
+          ],
+          "schema": [
+            {
+              "id": "ticketId",
+              "displayName": "ticketId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "customerName",
+              "displayName": "customerName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "customerEmail",
+              "displayName": "customerEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "route",
+              "displayName": "route",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        3024,
+        -1264
+      ],
+      "name": "Call NovaDesk — Auto Reply",
+      "id": "f436247a-1959-4fb6-8ed4-5ccc0f551bce"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "FfPWO34xVn29RHip",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/FfPWO34xVn29RHip",
+          "cachedResultName": "NovaDesk — Category Routing & Decisioning"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "category"
+          ],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1552,
+        -1456
+      ],
+      "name": "Call NovaDesk — Category Routing & Decisioning",
+      "id": "d6fef31d-0d33-47de-999b-440e9e957d50"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "DalbIGgXOdh4HjMf",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/DalbIGgXOdh4HjMf",
+          "cachedResultName": "NovaDesk - Human Review"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "ticketId",
+            "customerName",
+            "customerEmail",
+            "category",
+            "summary",
+            "route"
+          ],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        3696,
+        -752
+      ],
+      "name": "Call NovaDesk - Human Review",
+      "id": "9970fd45-4249-4705-a4bc-ba9672b36a28"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10ef8fdf-5123-4057-9312-06ca7f6fb973",
+              "name": "integration",
+              "value": "Slack",
+              "type": "string"
+            },
+            {
+              "id": "0350775b-2e65-43ea-99ee-59c09c614909",
+              "name": "integrationAction",
+              "value": "escalation_notification",
+              "type": "string"
+            },
+            {
+              "id": "f91ebd6b-1969-4fd5-9895-a7b4434e767b",
+              "name": "integrationTarget",
+              "value": "support-escalations",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2448,
+        -1584
+      ],
+      "id": "676a44c6-698e-4486-acac-2961a101789c",
+      "name": "Prepare Slack Escalation"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27124316-f37d-4f5f-85c2-99b68b727fdd",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "2bf42243-0b5c-45e2-a5ef-a70d54219cb2",
+              "name": "slackStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "0b6f4412-2ac1-48db-b429-193931edaef0",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Escalation').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "9d426818-11fc-4d51-9a38-edd28abeb069",
+              "name": "slackSentAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "5531b352-1b12-4d62-815b-3c12691fa167",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Escalation').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "0c8c43a3-0704-4fb0-8001-748379de2808",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Escalation').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "0942d70c-3b2c-4a25-ba3a-0d4fd8ca3a3c",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Escalation').item.json.integrationTarget }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3024,
+        -1680
+      ],
+      "id": "56e96948-d35e-436d-8f14-f9e3d45d1726",
+      "name": "Set Escalation Notification Success"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b93927b1-91d4-478b-8671-704732cc8f31",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "cffe6389-4ad4-45bb-a563-4e42002282b9",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Escalation').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "623aaafd-29e6-45f4-820b-ad17dca835ec",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Escalation').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "6eaac83a-d0c7-43f7-90bb-c954518ef4f2",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "d4e5d10f-a55a-426e-a02d-514d60e9c871",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Escalation').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "38873c49-f555-4652-ad96-8e18a4fb2727",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "623f7e77-d297-4245-b130-22ad66edb4ba",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack error' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3024,
+        -1488
+      ],
+      "id": "4c072f11-56eb-495f-bb46-1ccaf2c5b485",
+      "name": "Set Escalation Notification Failure"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize Ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Ticket": {
+      "main": [
+        [
+          {
+            "node": "Validate Required Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Required Fields": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Invalid Ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Build Triaged Ticket",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set AI Failure Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Triaged Ticket": {
+      "main": [
+        [
+          {
+            "node": "AI Confidence Acceptable?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Confidence Acceptable?": {
+      "main": [
+        [
+          {
+            "node": "Call NovaDesk — Category Routing & Decisioning",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Low Confidence Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Low Confidence Decision": {
+      "main": [
+        [
+          {
+            "node": "Human Review Required?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalation Required?": {
+      "main": [
+        [
+          {
+            "node": "Prepare Escalation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Human Review Required?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Escalation": {
+      "main": [
+        [
+          {
+            "node": "Human Review Required?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Prepare Slack Escalation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Human Review Required?": {
+      "main": [
+        [
+          {
+            "node": "Prepare Human Review",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Auto Reply Allowed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto Reply Allowed?": {
+      "main": [
+        [
+          {
+            "node": "Generate Auto Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call NovaDesk — Subflow — Team Routing & Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Auto Reply",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Auto Reply": {
+      "main": [
+        [
+          {
+            "node": "Call NovaDesk — Auto Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Auto Reply AI Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Human Review": {
+      "main": [
+        [
+          {
+            "node": "Prepare Human Review Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Human Review Notification": {
+      "main": [
+        [
+          {
+            "node": "Prepare Ticket Audit",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call NovaDesk - Human Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Escalation Alert": {
+      "main": [
+        [
+          {
+            "node": "Set Escalation Notification Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Escalation Notification Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Ticket Audit": {
+      "main": [
+        [
+          {
+            "node": "Save Ticket Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Invalid Ticket": {
+      "main": [
+        [
+          {
+            "node": "Prepare Ticket Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set AI Failure Fallback": {
+      "main": [
+        [
+          {
+            "node": "Prepare Human Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Auto Reply AI Failure": {
+      "main": [
+        [
+          {
+            "node": "Prepare Human Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call NovaDesk — Subflow — Team Routing & Notification": {
+      "main": [
+        [
+          {
+            "node": "Save Integration Log",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Prepare Ticket Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call NovaDesk — Category Routing & Decisioning": {
+      "main": [
+        [
+          {
+            "node": "Escalation Required?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack Escalation": {
+      "main": [
+        [
+          {
+            "node": "Send Escalation Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Escalation Notification Success": {
+      "main": [
+        [
+          {
+            "node": "Save Integration Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Escalation Notification Failure": {
+      "main": [
+        [
+          {
+            "node": "Save Integration Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call NovaDesk — Auto Reply": {
+      "main": [
+        [
+          {
+            "node": "Save Integration Log",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Prepare Ticket Audit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "38e4674f-2efa-4b57-a45a-05340d8aa8a9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0d454c8add7f29d742c87508631e80ec019c98ca1bd7dcc0062ee24a0081d035"
+  },
+  "nodeGroups": [],
+  "id": "qcGOPIMSBSWOFRBy",
+  "tags": []
+}

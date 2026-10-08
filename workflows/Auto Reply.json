@@ -1,0 +1,1280 @@
+{
+  "name": "NovaDesk — Auto Reply",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "44aa9282-3659-40c3-8451-ac0836e33edf",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Gmail Auto Reply').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "0f270afd-2a54-4d3b-aed3-a48b90dc04aa",
+              "name": "integration",
+              "value": "gmail",
+              "type": "string"
+            },
+            {
+              "id": "2618bad9-a975-4237-b838-ecc16c81efea",
+              "name": "integrationAction",
+              "value": "auto_reply",
+              "type": "string"
+            },
+            {
+              "id": "9a5084ba-570e-4d11-ad3a-bf7e79b3dceb",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Gmail Auto Reply').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "803ecc01-43aa-4007-abd0-eeb5ae6cdf40",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "a7c169dc-8ca0-407c-8cce-9796196a8faa",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Gmail Auto Reply').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "e14b2fec-85d6-4141-95b2-86d001297225",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "ebfa6f77-0db5-4a0f-b04a-42a3b466edda",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Gmail error' }}",
+              "type": "string"
+            },
+            {
+              "id": "c31cf50b-1f64-494b-845f-4843dd0f56f3",
+              "name": "emailStatus",
+              "value": "=failed",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        5776,
+        -1408
+      ],
+      "id": "c8261f3f-c1b6-4ee7-b9f2-107c6d741f2c",
+      "name": "Set Email Failed"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1b6a4da8-e8b3-42b2-924e-21a438e8957c",
+              "name": "integration",
+              "value": "gmail",
+              "type": "string"
+            },
+            {
+              "id": "6115ac3d-c730-45d5-9bc6-17ae85409e81",
+              "name": "integrationAction",
+              "value": "auto_reply",
+              "type": "string"
+            },
+            {
+              "id": "79174774-d5fd-47e7-a79b-4933e52eac66",
+              "name": "integrationTarget",
+              "value": "={{ $json.customerEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "33049e1e-ec3f-4617-8c7a-c544902913bb",
+              "name": "attemptedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "bb1c0511-b3e9-47ef-8aa4-54312752b12a",
+              "name": "emailSubject",
+              "value": "={{ 'Re: ' + $json.subject }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        5328,
+        -1600
+      ],
+      "id": "1f42364d-cdb7-46dc-8b93-7190fca024c0",
+      "name": "Prepare Gmail Auto Reply"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4hnWpGBxCwBz6oeH",
+          "mode": "list",
+          "cachedResultName": "support_ticket_audit",
+          "cachedResultUrl": "/projects/rurF5jkLGoYPPdmg/datatables/4hnWpGBxCwBz6oeH"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "=ticketAuditKey",
+              "keyValue": "={{ $json.ticketId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "replied",
+            "autoReplied": "true",
+            "firstResponseAt": "={{ $json.firstResponseAt }}",
+            "finalBusinessStatus": "replied",
+            "lastUpdatedAt": "={{ $now.toISO() }}",
+            "responseType": "={{ $json.responseType ?? \"auto_reply\" }}",
+            "replyPreparedAt": "={{ $json.replyPreparedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "sentiment",
+              "displayName": "sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "businessImpact",
+              "displayName": "businessImpact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "confidence",
+              "displayName": "confidence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "route",
+              "displayName": "route",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "decisionReason",
+              "displayName": "decisionReason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditType",
+              "displayName": "auditType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplyAllowed",
+              "displayName": "autoReplyAllowed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewRequired",
+              "displayName": "humanReviewRequired",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "escalated",
+              "displayName": "escalated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditAt",
+              "displayName": "auditAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "auditSource",
+              "displayName": "auditSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "finalBusinessStatus",
+              "displayName": "finalBusinessStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "finalRoute",
+              "displayName": "finalRoute",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ticketAuditKey",
+              "displayName": "ticketAuditKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerName",
+              "displayName": "customerName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerEmail",
+              "displayName": "customerEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "receivedAt",
+              "displayName": "receivedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "responseType",
+              "displayName": "responseType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "autoReplied",
+              "displayName": "autoReplied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "replyPreparedAt",
+              "displayName": "replyPreparedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "firstResponseAt",
+              "displayName": "firstResponseAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "auditVersion",
+              "displayName": "auditVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewStatus",
+              "displayName": "humanReviewStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationStatus",
+              "displayName": "humanReviewNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedById",
+              "displayName": "reviewedById",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationAt",
+              "displayName": "humanReviewNotificationAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedBy",
+              "displayName": "reviewedBy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationFailedAt",
+              "displayName": "humanReviewNotificationFailedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewSource",
+              "displayName": "reviewSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedAt",
+              "displayName": "reviewedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        6032,
+        -1936
+      ],
+      "id": "28637d8a-a710-41ca-9ca4-efdb731e30c5",
+      "name": "Update Ticket Audit — Email Success",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "44aa9282-3659-40c3-8451-ac0836e33edf",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Gmail Auto Reply').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "0f270afd-2a54-4d3b-aed3-a48b90dc04aa",
+              "name": "integration",
+              "value": "gmail",
+              "type": "string"
+            },
+            {
+              "id": "2618bad9-a975-4237-b838-ecc16c81efea",
+              "name": "integrationAction",
+              "value": "auto_reply",
+              "type": "string"
+            },
+            {
+              "id": "9a5084ba-570e-4d11-ad3a-bf7e79b3dceb",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Gmail Auto Reply').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "803ecc01-43aa-4007-abd0-eeb5ae6cdf40",
+              "name": "integrationStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "a7c169dc-8ca0-407c-8cce-9796196a8faa",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Gmail Auto Reply').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "e14b2fec-85d6-4141-95b2-86d001297225",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "ebfa6f77-0db5-4a0f-b04a-42a3b466edda",
+              "name": "errorMessage",
+              "value": "={{null}}",
+              "type": "string"
+            },
+            {
+              "id": "c31cf50b-1f64-494b-845f-4843dd0f56f3",
+              "name": "emailStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "110cb0f9-fa33-4769-83ad-63b9ae23a931",
+              "name": "firstResponseAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        5776,
+        -1824
+      ],
+      "id": "5b8356b9-2f7d-4073-afb4-d66dc18f6a56",
+      "name": "Set Email Success"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "04a00498-e84e-49fa-b2dd-ade62d021c93",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        4992,
+        -1600
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.customerEmail }}",
+        "subject": "={{ 'Re: ' + $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.replyText }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        5504,
+        -1600
+      ],
+      "id": "98ea6209-a292-4389-9617-3fe62d6af104",
+      "name": "Send Auto Reply Email",
+      "webhookId": "e7d75d58-4ace-4dec-b373-14158dc8bbb0",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "PEzWZZOifjFp1c9f",
+          "name": "Gmail account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4hnWpGBxCwBz6oeH",
+          "mode": "list",
+          "cachedResultName": "support_ticket_audit",
+          "cachedResultUrl": "/projects/rurF5jkLGoYPPdmg/datatables/4hnWpGBxCwBz6oeH"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "ticketAuditKey",
+              "keyValue": "={{ $json.ticketId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "reply_failed",
+            "autoReplied": "false",
+            "lastUpdatedAt": "={{ $now.toISO() }}",
+            "auditVersion": "v1",
+            "finalBusinessStatus": "auto_reply_failed",
+            "replyPreparedAt": "={{ $json.responseType ?? \"auto_reply\" }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "sentiment",
+              "displayName": "sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "businessImpact",
+              "displayName": "businessImpact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "confidence",
+              "displayName": "confidence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "route",
+              "displayName": "route",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "decisionReason",
+              "displayName": "decisionReason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditType",
+              "displayName": "auditType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplyAllowed",
+              "displayName": "autoReplyAllowed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewRequired",
+              "displayName": "humanReviewRequired",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "escalated",
+              "displayName": "escalated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditAt",
+              "displayName": "auditAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditSource",
+              "displayName": "auditSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "finalBusinessStatus",
+              "displayName": "finalBusinessStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "finalRoute",
+              "displayName": "finalRoute",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ticketAuditKey",
+              "displayName": "ticketAuditKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerName",
+              "displayName": "customerName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerEmail",
+              "displayName": "customerEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "receivedAt",
+              "displayName": "receivedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "responseType",
+              "displayName": "responseType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplied",
+              "displayName": "autoReplied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "replyPreparedAt",
+              "displayName": "replyPreparedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "firstResponseAt",
+              "displayName": "firstResponseAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditVersion",
+              "displayName": "auditVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewStatus",
+              "displayName": "humanReviewStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationStatus",
+              "displayName": "humanReviewNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedById",
+              "displayName": "reviewedById",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationAt",
+              "displayName": "humanReviewNotificationAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedBy",
+              "displayName": "reviewedBy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationFailedAt",
+              "displayName": "humanReviewNotificationFailedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewSource",
+              "displayName": "reviewSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedAt",
+              "displayName": "reviewedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        6112,
+        -1280
+      ],
+      "id": "b4ff5021-195f-46f3-96c1-97f70a5eca72",
+      "name": "Update Ticket Audit — Email Failed"
+    },
+    {
+      "parameters": {
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        6256,
+        -1600
+      ],
+      "id": "b71cc6d4-3ffc-4577-b4c1-663c3dec51a9",
+      "name": "Return Auto Reply Result"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c10b1963-8e8e-45a6-9c10-83e64caf55c4",
+              "name": "replyText",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "f95145f2-84b9-4e41-923a-953ed6c3d83b",
+              "name": "responseType",
+              "value": "auto_reply",
+              "type": "string"
+            },
+            {
+              "id": "0166dad0-ced7-4f40-9166-1256702c2c93",
+              "name": "autoReplied",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "631be844-4bfe-4bbc-b35b-ef1cfa3d3ec3",
+              "name": "replyPreparedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "c9000c24-5762-45a1-bf3c-087c14097f29",
+              "name": "status",
+              "value": "reply_prepared",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        5152,
+        -1600
+      ],
+      "id": "004d7ef0-8a98-4082-8562-f7d5cf73c97a",
+      "name": "Prepare Auto Reply"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Set Email Success": {
+      "main": [
+        [
+          {
+            "node": "Return Auto Reply Result",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Ticket Audit — Email Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Gmail Auto Reply": {
+      "main": [
+        [
+          {
+            "node": "Send Auto Reply Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Email Failed": {
+      "main": [
+        [
+          {
+            "node": "Update Ticket Audit — Email Failed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Return Auto Reply Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Prepare Auto Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Auto Reply Email": {
+      "main": [
+        [
+          {
+            "node": "Set Email Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Email Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Ticket Audit — Email Success": {
+      "main": [
+        [
+          {
+            "node": "Return Auto Reply Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Return Auto Reply Result": {
+      "main": [
+        []
+      ]
+    },
+    "Update Ticket Audit — Email Failed": {
+      "main": [
+        [
+          {
+            "node": "Return Auto Reply Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Auto Reply": {
+      "main": [
+        [
+          {
+            "node": "Prepare Gmail Auto Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "768998cd-b955-4ab4-b68f-7604618b3fca",
+  "meta": {
+    "instanceId": "0d454c8add7f29d742c87508631e80ec019c98ca1bd7dcc0062ee24a0081d035"
+  },
+  "nodeGroups": [],
+  "id": "1JgNukPjjkfTjFU1",
+  "tags": []
+}

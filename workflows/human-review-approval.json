@@ -1,0 +1,1646 @@
+{
+  "name": "NovaDesk — Human Review & Approval",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7e393049-e4b8-40d8-864a-058b2350d5d3",
+              "name": "humanReviewStatus",
+              "value": "rejected",
+              "type": "string"
+            },
+            {
+              "id": "60e9384f-c581-4888-92be-1bed3e3dccf2",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "c60a152f-8588-4afa-972a-5d8dde4f0a01",
+              "name": "status",
+              "value": "reviewed_rejected",
+              "type": "string"
+            },
+            {
+              "id": "2122a736-0c45-4eff-a520-6329a009f96a",
+              "name": "decisionReason",
+              "value": "Human reviewer rejected the ticket action.",
+              "type": "string"
+            },
+            {
+              "id": "aa89e5bc-7e5c-4244-ba8e-7797b0f88b32",
+              "name": "reviewedAt",
+              "value": "={{ $json.data.respondedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "3837d004-e70f-4fd4-8b9d-9edf0963b04f",
+              "name": "reviewedBy",
+              "value": "={{ $json.data.responder.name }}",
+              "type": "string"
+            },
+            {
+              "id": "d4a18226-f1e6-4ddd-96f9-e75c03950fd5",
+              "name": "reviewedById",
+              "value": "={{ $json.data.responder.id }}",
+              "type": "string"
+            },
+            {
+              "id": "35327373-0b6b-4fb0-81fb-7e3a6778e949",
+              "name": "reviewSource",
+              "value": "={{ $json.data.responder.source }}",
+              "type": "string"
+            },
+            {
+              "id": "d51e1ce2-c3aa-473f-a20d-afbfca4fee78",
+              "name": "ticketId",
+              "value": "={{ $('Start').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "b622d1d5-c8a5-4116-b21c-401f1b646d71",
+              "name": "customerName",
+              "value": "={{ $('Start').item.json.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "aa5fc98a-47b2-42a4-b60c-9294259144f7",
+              "name": "customerEmail",
+              "value": "={{ $('Start').item.json.customerEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "ec5cff47-e482-4da0-8236-b79bf8dcd4ee",
+              "name": "category",
+              "value": "={{ $('Start').item.json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "bfe430e2-947d-442e-b333-bfb8f7333b03",
+              "name": "summary",
+              "value": "={{ $('Start').item.json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "cd1effcb-0dee-42dd-aa5e-dda10f332e38",
+              "name": "route",
+              "value": "={{ $('Start').item.json.route }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4768,
+        -288
+      ],
+      "id": "13c4bff6-303e-43c5-a486-0c1984e416eb",
+      "name": "Set Human Review Rejected"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4hnWpGBxCwBz6oeH",
+          "mode": "list",
+          "cachedResultName": "support_ticket_audit",
+          "cachedResultUrl": "/projects/rurF5jkLGoYPPdmg/datatables/4hnWpGBxCwBz6oeH"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "ticketAuditKey",
+              "keyValue": "={{ $json.ticketId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "reviewed_rejected",
+            "humanReviewRequired": "false",
+            "finalBusinessStatus": "reviewed_rejected",
+            "decisionReason": "Human reviewer rejected the ticket action.",
+            "lastUpdatedAt": "={{ $now.toISO() }}",
+            "humanReviewStatus": "={{ $json.humanReviewStatus }}",
+            "reviewedAt": "={{ $json.reviewedAt }}",
+            "reviewedBy": "={{ $json.reviewedBy }}",
+            "reviewedById": "={{ $json.reviewedById }}",
+            "reviewSource": "={{ $json.reviewSource }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "sentiment",
+              "displayName": "sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "businessImpact",
+              "displayName": "businessImpact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "confidence",
+              "displayName": "confidence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "route",
+              "displayName": "route",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "decisionReason",
+              "displayName": "decisionReason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "auditType",
+              "displayName": "auditType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplyAllowed",
+              "displayName": "autoReplyAllowed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewRequired",
+              "displayName": "humanReviewRequired",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "escalated",
+              "displayName": "escalated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditAt",
+              "displayName": "auditAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditSource",
+              "displayName": "auditSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "finalBusinessStatus",
+              "displayName": "finalBusinessStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "finalRoute",
+              "displayName": "finalRoute",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ticketAuditKey",
+              "displayName": "ticketAuditKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerName",
+              "displayName": "customerName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerEmail",
+              "displayName": "customerEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "receivedAt",
+              "displayName": "receivedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "responseType",
+              "displayName": "responseType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplied",
+              "displayName": "autoReplied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "replyPreparedAt",
+              "displayName": "replyPreparedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "firstResponseAt",
+              "displayName": "firstResponseAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditVersion",
+              "displayName": "auditVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewStatus",
+              "displayName": "humanReviewStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewNotificationStatus",
+              "displayName": "humanReviewNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedById",
+              "displayName": "reviewedById",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewNotificationAt",
+              "displayName": "humanReviewNotificationAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedBy",
+              "displayName": "reviewedBy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewNotificationFailedAt",
+              "displayName": "humanReviewNotificationFailedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewSource",
+              "displayName": "reviewSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewedAt",
+              "displayName": "reviewedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4960,
+        -288
+      ],
+      "id": "1ade9e04-b638-46aa-bef2-4e4a20d75cb8",
+      "name": "Update Ticket Audit — Human Rejected",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data.approved }}",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c21ff8e9-05af-4f67-b03f-0041a0431000"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "approved"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4b1c4eec-9c79-4d69-9bc1-4321c87d7c09",
+                    "leftValue": "={{ $json.data.approved }}",
+                    "rightValue": "false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Rejected"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        4528,
+        -496
+      ],
+      "id": "07ea3610-72a8-4e24-979d-49521c0eb7cb",
+      "name": "Human Review Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7e393049-e4b8-40d8-864a-058b2350d5d3",
+              "name": "humanReviewStatus",
+              "value": "approved",
+              "type": "string"
+            },
+            {
+              "id": "60e9384f-c581-4888-92be-1bed3e3dccf2",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "c60a152f-8588-4afa-972a-5d8dde4f0a01",
+              "name": "status",
+              "value": "reviewed_approved",
+              "type": "string"
+            },
+            {
+              "id": "2122a736-0c45-4eff-a520-6329a009f96a",
+              "name": "decisionReason",
+              "value": "Human reviewer approved the ticket action.",
+              "type": "string"
+            },
+            {
+              "id": "aa89e5bc-7e5c-4244-ba8e-7797b0f88b32",
+              "name": "reviewedAt",
+              "value": "={{ $json.data.respondedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "3837d004-e70f-4fd4-8b9d-9edf0963b04f",
+              "name": "reviewedBy",
+              "value": "={{ $json.data.responder.name }}",
+              "type": "string"
+            },
+            {
+              "id": "d4a18226-f1e6-4ddd-96f9-e75c03950fd5",
+              "name": "reviewedById",
+              "value": "={{ $json.data.responder.id }}",
+              "type": "string"
+            },
+            {
+              "id": "35327373-0b6b-4fb0-81fb-7e3a6778e949",
+              "name": "reviewSource",
+              "value": "={{ $json.data.responder.source }}",
+              "type": "string"
+            },
+            {
+              "id": "d51e1ce2-c3aa-473f-a20d-afbfca4fee78",
+              "name": "ticketId",
+              "value": "={{ $json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "b622d1d5-c8a5-4116-b21c-401f1b646d71",
+              "name": "customerName",
+              "value": "={{ $json.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "aa5fc98a-47b2-42a4-b60c-9294259144f7",
+              "name": "customerEmail",
+              "value": "={{ $json.customerEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "ec5cff47-e482-4da0-8236-b79bf8dcd4ee",
+              "name": "category",
+              "value": "={{ $json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "bfe430e2-947d-442e-b333-bfb8f7333b03",
+              "name": "summary",
+              "value": "={{ $json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "cd1effcb-0dee-42dd-aa5e-dda10f332e38",
+              "name": "route",
+              "value": "={{ $json.route }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4768,
+        -672
+      ],
+      "id": "9c5b07e3-6256-4f38-9d37-de19baba1f6a",
+      "name": "Set Human Review Approved"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4hnWpGBxCwBz6oeH",
+          "mode": "list",
+          "cachedResultName": "support_ticket_audit",
+          "cachedResultUrl": "/projects/rurF5jkLGoYPPdmg/datatables/4hnWpGBxCwBz6oeH"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "ticketAuditKey",
+              "keyValue": "={{ $json.ticketId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "reviewed_approved",
+            "humanReviewRequired": "false",
+            "finalBusinessStatus": "reviewed_approved",
+            "decisionReason": "Human reviewer approved the ticket action.",
+            "lastUpdatedAt": "={{ $now.toISO() }}",
+            "humanReviewStatus": "={{ $json.humanReviewStatus }}",
+            "reviewedAt": "={{ $json.reviewedAt }}",
+            "reviewedBy": "={{ $json.reviewedBy }}",
+            "reviewedById": "={{ $json.reviewedById }}",
+            "reviewSource": "={{ $json.reviewSource }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "sentiment",
+              "displayName": "sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "businessImpact",
+              "displayName": "businessImpact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "confidence",
+              "displayName": "confidence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "route",
+              "displayName": "route",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "decisionReason",
+              "displayName": "decisionReason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "auditType",
+              "displayName": "auditType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplyAllowed",
+              "displayName": "autoReplyAllowed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewRequired",
+              "displayName": "humanReviewRequired",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "escalated",
+              "displayName": "escalated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditAt",
+              "displayName": "auditAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditSource",
+              "displayName": "auditSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "finalBusinessStatus",
+              "displayName": "finalBusinessStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "finalRoute",
+              "displayName": "finalRoute",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ticketAuditKey",
+              "displayName": "ticketAuditKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerName",
+              "displayName": "customerName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerEmail",
+              "displayName": "customerEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "receivedAt",
+              "displayName": "receivedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "responseType",
+              "displayName": "responseType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplied",
+              "displayName": "autoReplied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "replyPreparedAt",
+              "displayName": "replyPreparedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "firstResponseAt",
+              "displayName": "firstResponseAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditVersion",
+              "displayName": "auditVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewStatus",
+              "displayName": "humanReviewStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewNotificationStatus",
+              "displayName": "humanReviewNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedById",
+              "displayName": "reviewedById",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewNotificationAt",
+              "displayName": "humanReviewNotificationAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedBy",
+              "displayName": "reviewedBy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewNotificationFailedAt",
+              "displayName": "humanReviewNotificationFailedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewSource",
+              "displayName": "reviewSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewedAt",
+              "displayName": "reviewedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4976,
+        -672
+      ],
+      "id": "b1f7f413-8e7b-4eb6-a848-c3859c43d596",
+      "name": "Update Ticket Audit — Human Approved",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "96fe9b28-c4d6-4f32-951a-5435b885af29",
+              "name": "actionStatus",
+              "value": "approved_for_processing",
+              "type": "string"
+            },
+            {
+              "id": "548c098c-f66a-41d5-b0aa-1aed01160747",
+              "name": "actionTarget",
+              "value": "billing_finance",
+              "type": "string"
+            },
+            {
+              "id": "4e68dbcb-4f34-4b98-bcb9-7b5bebb9dff9",
+              "name": "status",
+              "value": "approved_for_refund_processing",
+              "type": "string"
+            },
+            {
+              "id": "1380e5ef-6ebd-4dcf-90c9-76ffe36e9db2",
+              "name": "decisionReason",
+              "value": "Refund request approved by human reviewer and routed to Billing/Finance for processing.",
+              "type": "string"
+            },
+            {
+              "id": "d94e6b7e-525a-416e-8ccb-3c1302a5d341",
+              "name": "refundApprovedAt",
+              "value": "={{ $json.reviewedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "0e4a334a-be08-4ff3-93c9-5f652190781a",
+              "name": "refundApprovedBy",
+              "value": "={{ $json.reviewedBy }}",
+              "type": "string"
+            },
+            {
+              "id": "8b340795-876e-42f6-be04-2656d750dc27",
+              "name": "refundApprovedById",
+              "value": "={{ $json.reviewedById }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        5744,
+        -832
+      ],
+      "id": "d0551c4b-4d8b-4565-9e24-370e298ba215",
+      "name": "Prepare Approved Refund Action"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "2f649cdf-eb9a-4519-a63a-966da56f9c69",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        4320,
+        -496
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "refund_request",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c33c848e-4430-4aac-a6c6-7b08de637496"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "refund_request"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        5456,
+        -656
+      ],
+      "id": "a422441c-cfb2-48d3-bf04-97926e7d24b6",
+      "name": "Approved Action Router"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9af3fefb-8112-4eba-8e3c-09a685088b6c",
+              "name": "ticketId",
+              "value": "={{ $('Set Human Review Approved').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "b4916e73-7f71-4b7b-91fb-31ec9d3b433a",
+              "name": "customerName",
+              "value": "={{ $('Set Human Review Approved').item.json.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "f091c49f-b9c5-4601-a586-7dfe6edc8505",
+              "name": "customerEmail",
+              "value": "={{ $('Set Human Review Approved').item.json.customerEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "cd987ebe-83bb-4f78-8286-4e5e2a9f8299",
+              "name": "category",
+              "value": "={{ $('Set Human Review Approved').item.json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "f9ce156f-902b-476c-9f8a-2d66c426fc7e",
+              "name": "priority",
+              "value": "={{ $('Set Human Review Approved').item.json.priority }}",
+              "type": "string"
+            },
+            {
+              "id": "98f7f241-d2fe-4e6b-9cc7-343d50de5337",
+              "name": "summary",
+              "value": "={{ $('Set Human Review Approved').item.json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "9e53cc9f-1c65-4297-855a-aff915add317",
+              "name": "route",
+              "value": "={{ $('Set Human Review Approved').item.json.route }}",
+              "type": "string"
+            },
+            {
+              "id": "89d10fe7-b36c-45f4-9dfa-179b57861c6e",
+              "name": "reviewedAt",
+              "value": "={{ $('Set Human Review Approved').item.json.reviewedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "8d81c2c8-5b7f-490a-a79d-17cfb5418300",
+              "name": "reviewedBy",
+              "value": "={{ $('Set Human Review Approved').item.json.reviewedBy }}",
+              "type": "string"
+            },
+            {
+              "id": "af5e4fbb-2cc8-4db6-88d1-d75cf83234b6",
+              "name": "reviewedById",
+              "value": "={{ $('Set Human Review Approved').item.json.reviewedById }}",
+              "type": "string"
+            },
+            {
+              "id": "d69b521f-d06c-49f1-9544-21bc53e5280f",
+              "name": "reviewSource",
+              "value": "={{ $('Set Human Review Approved').item.json.reviewSource }}",
+              "type": "string"
+            },
+            {
+              "id": "6949b0c5-38b0-4a0e-8222-43e25db15452",
+              "name": "humanReviewStatus",
+              "value": "approved",
+              "type": "string"
+            },
+            {
+              "id": "17c23c91-e616-4894-a191-17431c46cac0",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "9ac57364-58db-4bae-8d6b-ff16473df5b5",
+              "name": "status",
+              "value": "reviewed_approved",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        5200,
+        -672
+      ],
+      "id": "b6a777f6-aac7-4267-9807-06e06a00f7e4",
+      "name": "Restore Approved Context"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9af3fefb-8112-4eba-8e3c-09a685088b6c",
+              "name": "ticketId",
+              "value": "={{ $('Set Human Review Rejected').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "b4916e73-7f71-4b7b-91fb-31ec9d3b433a",
+              "name": "customerName",
+              "value": "={{ $('Set Human Review Rejected').item.json.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "f091c49f-b9c5-4601-a586-7dfe6edc8505",
+              "name": "customerEmail",
+              "value": "={{ $('Set Human Review Rejected').item.json.customerEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "cd987ebe-83bb-4f78-8286-4e5e2a9f8299",
+              "name": "category",
+              "value": "={{ $('Set Human Review Rejected').item.json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "f9ce156f-902b-476c-9f8a-2d66c426fc7e",
+              "name": "priority",
+              "value": "={{ $('Set Human Review Rejected').item.json.priority }}",
+              "type": "string"
+            },
+            {
+              "id": "98f7f241-d2fe-4e6b-9cc7-343d50de5337",
+              "name": "summary",
+              "value": "={{ $('Set Human Review Rejected').item.json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "9e53cc9f-1c65-4297-855a-aff915add317",
+              "name": "route",
+              "value": "={{ $('Set Human Review Rejected').item.json.route }}",
+              "type": "string"
+            },
+            {
+              "id": "89d10fe7-b36c-45f4-9dfa-179b57861c6e",
+              "name": "reviewedAt",
+              "value": "={{ $('Set Human Review Rejected').item.json.reviewedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "8d81c2c8-5b7f-490a-a79d-17cfb5418300",
+              "name": "reviewedBy",
+              "value": "={{ $('Set Human Review Rejected').item.json.reviewedBy }}",
+              "type": "string"
+            },
+            {
+              "id": "af5e4fbb-2cc8-4db6-88d1-d75cf83234b6",
+              "name": "reviewedById",
+              "value": "={{ $('Set Human Review Rejected').item.json.reviewedById }}",
+              "type": "string"
+            },
+            {
+              "id": "d69b521f-d06c-49f1-9544-21bc53e5280f",
+              "name": "reviewSource",
+              "value": "={{ $('Set Human Review Rejected').item.json.reviewSource }}",
+              "type": "string"
+            },
+            {
+              "id": "6949b0c5-38b0-4a0e-8222-43e25db15452",
+              "name": "humanReviewStatus",
+              "value": "approved",
+              "type": "string"
+            },
+            {
+              "id": "17c23c91-e616-4894-a191-17431c46cac0",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "9ac57364-58db-4bae-8d6b-ff16473df5b5",
+              "name": "status",
+              "value": "reviewed_Rejected",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        5200,
+        -288
+      ],
+      "id": "04cf794e-c18d-4467-8963-29f7315f5193",
+      "name": "Restore Rejected Context"
+    },
+    {
+      "parameters": {
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        6112,
+        -288
+      ],
+      "id": "33b1d0a9-4380-4e59-b0ff-ac938079725d",
+      "name": "Return Human Review Result"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "2dIoU7UyjSByfhyz",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/2dIoU7UyjSByfhyz",
+          "cachedResultName": "NovaDesk — Subflow — Team Routing & Notification"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        5904,
+        -640
+      ],
+      "id": "308259d7-4950-4775-a6c4-659a61432edd",
+      "name": "Call 'NovaDesk — Subflow — Team Routing & Notification'"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Human Review Decision": {
+      "main": [
+        [
+          {
+            "node": "Set Human Review Approved",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Human Review Rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Human Review Approved": {
+      "main": [
+        [
+          {
+            "node": "Update Ticket Audit — Human Approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Ticket Audit — Human Approved": {
+      "main": [
+        [
+          {
+            "node": "Restore Approved Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Approved Refund Action": {
+      "main": [
+        [
+          {
+            "node": "Call 'NovaDesk — Subflow — Team Routing & Notification'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Human Review Rejected": {
+      "main": [
+        [
+          {
+            "node": "Update Ticket Audit — Human Rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Human Review Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved Action Router": {
+      "main": [
+        [
+          {
+            "node": "Prepare Approved Refund Action",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call 'NovaDesk — Subflow — Team Routing & Notification'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore Approved Context": {
+      "main": [
+        [
+          {
+            "node": "Approved Action Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Ticket Audit — Human Rejected": {
+      "main": [
+        [
+          {
+            "node": "Restore Rejected Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore Rejected Context": {
+      "main": [
+        [
+          {
+            "node": "Return Human Review Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'NovaDesk — Subflow — Team Routing & Notification'": {
+      "main": [
+        [
+          {
+            "node": "Return Human Review Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5adb48fb-2b52-4460-be21-2065813ef355",
+  "meta": {
+    "instanceId": "0d454c8add7f29d742c87508631e80ec019c98ca1bd7dcc0062ee24a0081d035"
+  },
+  "nodeGroups": [],
+  "id": "n7l0I1c6NB10irw6",
+  "tags": []
+}

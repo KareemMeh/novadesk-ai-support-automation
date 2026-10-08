@@ -1,0 +1,20 @@
+# Environment / secrets
+.env
+.env.*
+*.key
+*.pem
+*.crt
+
+# n8n local/runtime
+.n8n/
+node_modules/
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
+
+# Temporary / logs
+*.log
+*.tmp

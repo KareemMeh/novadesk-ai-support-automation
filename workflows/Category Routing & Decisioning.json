@@ -1,0 +1,1787 @@
+{
+  "name": "NovaDesk — Category Routing & Decisioning",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "human_review_queue",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "waiting_human_review",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Unknown or unsupported category requires human review.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1776,
+        64
+      ],
+      "id": "e697b234-0fba-4d79-84f0-4f2f652736ec",
+      "name": "Set Unknown Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "sales",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "routed",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Sales inquiry routed to Sales.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1776,
+        -368
+      ],
+      "id": "44157eb6-6e1a-4a42-9c95-fde0efafc3b6",
+      "name": "Set Sales Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3fe486d1-3bda-4214-8749-a081ef0a8f3d",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "7a618301-49eb-4127-ac1e-d090d3f34100",
+              "name": "decisionReason",
+              "value": "Ticket routed successfully, but confidence is below the auto-reply threshold.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2320,
+        -544
+      ],
+      "id": "068b8701-4d83-4ee3-9ae1-162df43483e8",
+      "name": "Set Auto Reply Blocked"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b43efbd4-5659-485e-8bce-f8891913fc75",
+              "leftValue": "={{ $json.confidence }}",
+              "rightValue": 0.85,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2080,
+        -624
+      ],
+      "id": "07723db3-43ee-4cb9-900d-8c3fa815e4b0",
+      "name": "Auto Reply Confidence OK?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "general_support",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "routed",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Simple account issue routed to General Support.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1792,
+        -576
+      ],
+      "id": "60ef6bc1-0a5c-49ee-8785-0c1034ae6718",
+      "name": "Set Account Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e6fa7cca-60fe-4afc-b8cd-68143cde5e6b",
+              "name": "autoReplyAllowed",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "58974893-479b-47ed-8b97-e892317b346c",
+              "name": "decisionReason",
+              "value": "High-confidence low-risk ticket is eligible for automatic response.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2320,
+        -752
+      ],
+      "id": "875bff97-7e7d-42e9-9ddb-912f743ab853",
+      "name": "Set Auto Reply Allowed"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "general_support",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "routed",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": " General question is eligible for automatic support handling.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1776,
+        -752
+      ],
+      "id": "b25fe3d8-8d2f-4c27-a82e-8292ac3f8189",
+      "name": "Set General Question Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "customer_success_retention",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "waiting_human_review",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Cancellation request requires human review.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2064,
+        -864
+      ],
+      "id": "089561f1-ef37-4c7c-a498-e92977737827",
+      "name": "Set Normal Cancellation Decision"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.priority == \"critical\" || $json.priority == \"high\" }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "4714415e-c1ec-4595-bb69-8df44ba7701b"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "High Risk"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6501468d-0c95-48cd-a613-375cc9940a73",
+                    "leftValue": "={{ $json.priority == \"medium\" || $json.priority == \"low\" }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "normal"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1776,
+        -944
+      ],
+      "id": "4eeddb3c-0483-45b6-8c3f-dd8fbed29622",
+      "name": "Cancellation Priority"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "customer_success_lead",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "customer_success_lead",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "escalated",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "High-risk cancellation requires retention review and escalation.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2064,
+        -1056
+      ],
+      "id": "723154d8-3664-4c85-8f4c-7816fbf19798",
+      "name": "Set High Risk Cancellation Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "support_manager",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "support_manager",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "escalated",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Complaint requires manager review and escalation.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1776,
+        -1136
+      ],
+      "id": "9ebcd026-98d0-4bb8-be70-d62f6c980b3c",
+      "name": "Set Complaint Decision"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.category}}",
+                    "rightValue": "technical_issue",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "001a3f27-5ce4-4f21-aeb1-7693d11b5648"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "technical_issue"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a62016b2-b4cd-4606-90c6-6acb70deeaf4",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "billing_issue",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "billing_issue"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "1f1b7215-8227-45b1-b357-5c7f59f8e8db",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "refund_request",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "refund_request"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "cf877a68-b334-4784-8b04-a53eb2b47429",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "complaint",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "complaint"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5fc14d4f-c592-4a0d-a50f-6ef7acd9439e",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "cancellation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "cancellation"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "df76c98a-6fbe-45f9-b5ec-f3e824693273",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "general_question",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "general_question"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "98e43296-d43f-4998-95bd-e89c657ac306",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "account_issue",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "account_issue"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "32aa83a2-04f4-4080-933b-8d7eac8fd77d",
+                    "leftValue": "={{ $json.category }}",
+                    "rightValue": "sales_inquiry",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "sales_inquiry"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1408,
+        -1216
+      ],
+      "id": "d874c4d2-c306-4d9f-97e7-cc9dc6fdc167",
+      "name": "Route by Category"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "billing_finance",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "waiting_human_review",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Refund request requires human review before any financial action.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1776,
+        -1328
+      ],
+      "id": "707a3a06-6f17-4519-a54e-44d2b873e669",
+      "name": "Set Refund Decision"
+    },
+    {
+      "parameters": {
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        3696,
+        -1040
+      ],
+      "id": "d4ad6b53-6671-45a3-bb48-5c02baf0a4b9",
+      "name": "Collect Business Decision"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.priority }}",
+                    "rightValue": "critical",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ea0ae7ac-a792-41a9-b0c0-9f6e85fb2b1b"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "critical"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6a7ac11b-efcc-4b3b-a31d-88f8907ee303",
+                    "leftValue": "={{ $json.priority }}",
+                    "rightValue": "high",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "high"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b246f62e-5aa8-4ec0-9673-ed5ac58289f0",
+                    "leftValue": "={{ $json.priority == \"medium\"|| $json.priority == \"low\"}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "normal"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1792,
+        -1712
+      ],
+      "id": "037fe18b-0276-43c6-b6d3-cb0f02f6eb25",
+      "name": "Billing Priority"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "billing_finance",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "routed",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Billing issue routed to Billing / Finance.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2080,
+        -1488
+      ],
+      "id": "d9ff9dd4-048d-4533-8a51-81cff48d44f7",
+      "name": "Set Normal Billing Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "billing_finance",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "waiting_human_review",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "waiting_human_review",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2080,
+        -1664
+      ],
+      "id": "15d3aa4a-d921-4c23-a0e7-0d8811aed3a9",
+      "name": "Set High Billing Decision"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.priority }}",
+                    "rightValue": "critical",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ea0ae7ac-a792-41a9-b0c0-9f6e85fb2b1b"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "critical"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6a7ac11b-efcc-4b3b-a31d-88f8907ee303",
+                    "leftValue": "={{ $json.priority }}",
+                    "rightValue": "high",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "high"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b246f62e-5aa8-4ec0-9673-ed5ac58289f0",
+                    "leftValue": "={{ $json.priority == \"medium\"|| $json.priority == \"low\"}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "normal"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1760,
+        -2208
+      ],
+      "id": "e2c23c75-5976-4504-b9e0-349c9dc5874a",
+      "name": "Technical Priority"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "billing_finance",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "billing_manager",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "escalated",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Critical billing issue requires human review and escalation to Billing Manager.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2080,
+        -1840
+      ],
+      "id": "c3b82615-2e19-4026-a2d7-ee5e6f88dfab",
+      "name": "Set Critical Billing Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "technical_support",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "null",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "routed",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Technical issue routed to Technical Support.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2048,
+        -2048
+      ],
+      "id": "280d7bb1-da01-4cf4-8fe6-380c57b45308",
+      "name": "Set Normal Technical Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "technical_lead",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "technical_support",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "escalated",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "High-priority technical issue requires escalation.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2048,
+        -2272
+      ],
+      "id": "602c217c-a1b5-4da7-9c66-6b9d6dacdb51",
+      "name": "Set High Technical Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51c9a250-9a9c-44a9-8d60-8db9588c1bc4",
+              "name": "route",
+              "value": "technical_lead",
+              "type": "string"
+            },
+            {
+              "id": "9dc4f684-6223-4374-9ed2-e587a4a0002c",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "49141582-19f7-4858-92cb-f09af208387c",
+              "name": "escalated",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "85d7da89-7319-4c88-a684-c63af3837d31",
+              "name": "escalationTarget",
+              "value": "technical_lead",
+              "type": "string"
+            },
+            {
+              "id": "60e8ec8d-b11d-4acf-903c-609d9331d58b",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "1744bf6e-f844-4106-b45c-90745dfe760c",
+              "name": "status",
+              "value": "escalated",
+              "type": "string"
+            },
+            {
+              "id": "d886f882-c644-4982-8869-5e19ca553f51",
+              "name": "decisionReason",
+              "value": "Critical technical issue requires immediate escalation.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2064,
+        -2496
+      ],
+      "id": "ba92b0e8-4b72-426e-97c4-fcb4886bb5ad",
+      "name": "Set Critical Technical Decision"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "4e24d8d9-6264-418d-abba-d17f1a987a26",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        1136,
+        -1120
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Route by Category": {
+      "main": [
+        [
+          {
+            "node": "Technical Priority",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Billing Priority",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Refund Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Complaint Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cancellation Priority",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set General Question Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Account Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Sales Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Unknown Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Technical Priority": {
+      "main": [
+        [
+          {
+            "node": "Set Critical Technical Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set High Technical Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Normal Technical Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Billing Priority": {
+      "main": [
+        [
+          {
+            "node": "Set Critical Billing Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set High Billing Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Normal Billing Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cancellation Priority": {
+      "main": [
+        [
+          {
+            "node": "Set High Risk Cancellation Decision",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Normal Cancellation Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set General Question Decision": {
+      "main": [
+        [
+          {
+            "node": "Auto Reply Confidence OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Account Decision": {
+      "main": [
+        [
+          {
+            "node": "Auto Reply Confidence OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Sales Decision": {
+      "main": [
+        [
+          {
+            "node": "Auto Reply Confidence OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto Reply Confidence OK?": {
+      "main": [
+        [
+          {
+            "node": "Set Auto Reply Allowed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Auto Reply Blocked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Critical Technical Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set High Technical Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Normal Technical Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Critical Billing Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set High Billing Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Normal Billing Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Refund Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Complaint Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set High Risk Cancellation Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Normal Cancellation Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Auto Reply Allowed": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Auto Reply Blocked": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Unknown Decision": {
+      "main": [
+        [
+          {
+            "node": "Collect Business Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Route by Category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5cc08c54-96fe-44f8-9e43-abcc8253748a",
+  "meta": {
+    "instanceId": "0d454c8add7f29d742c87508631e80ec019c98ca1bd7dcc0062ee24a0081d035"
+  },
+  "nodeGroups": [],
+  "id": "FfPWO34xVn29RHip",
+  "tags": []
+}

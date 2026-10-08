@@ -1,0 +1,2429 @@
+{
+  "name": "NovaDesk — Subflow — Team Routing & Notification",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Support Manager').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Support Manager').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Support Manager').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Support Manager').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack error' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        16,
+        2208
+      ],
+      "id": "1f2d91eb-2d0f-4745-8c08-aeb733144533",
+      "name": "Set Slack Failure — Support Manager"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Support Manager').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Support Manager').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Support Manager').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Support Manager').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        16,
+        2032
+      ],
+      "id": "01b21970-9a2e-48d4-81f2-604e2eb96334",
+      "name": "Set Slack Success — Support Manager"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Customer Success Lead').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Customer Success Lead').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Customer Success Lead').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Customer Success Lead').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack error' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        16,
+        1856
+      ],
+      "id": "b6f3efc8-4f46-4aa2-8678-37aa9695b2bb",
+      "name": "Set Slack Failure — Customer Success Lead"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Customer Success Lead').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Customer Success Lead').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Customer Success Lead').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Customer Success Lead').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        1696
+      ],
+      "id": "6d13e33e-5194-4fc4-a853-36cce6ceacb8",
+      "name": "Set Slack Success — Customer Success Lead"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C60NQCTE0",
+          "mode": "list",
+          "cachedResultName": "support-human-review"
+        },
+        "text": "=📬 Team Routing Notification\n\nTicket: {{ $json.ticketId }}\nCustomer: {{ $json.customerName }}\nEmail: {{ $json.customerEmail }}\n\nCategory: {{ $json.category }}\nPriority: {{ $json.priority }}\nRoute: {{ $json.route }}\n\nReason: {{ $json.decisionReason || 'Ticket routed by business rules.' }}\n\nSummary:\n{{ $json.summary }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        -176,
+        2128
+      ],
+      "id": "b9c7155b-1aa4-45df-be60-a9e333f464b2",
+      "name": "support_manager",
+      "webhookId": "f3f064cb-cc7f-47ac-acdc-dd564a670e8e",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integrationaction",
+              "name": "integrationAction",
+              "value": "team_notification",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationtarget",
+              "name": "integrationTarget",
+              "value": "support-human-review",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -464,
+        2128
+      ],
+      "id": "de893cc4-7b14-4e57-bf5d-b82759532fbe",
+      "name": "Prepare Slack Support Manager"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Technical Lead').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Technical Lead').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Technical Lead').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Technical Lead').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack error' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        16,
+        1504
+      ],
+      "id": "68ad41d6-e8c2-4669-859e-d8c7580fd390",
+      "name": "Set Slack Failure — Technical Lead"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Technical Lead').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Technical Lead').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Technical Lead').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Technical Lead').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        16,
+        1424
+      ],
+      "id": "22cfab42-1f73-4b90-8055-011a16881244",
+      "name": "Set Slack Success — Technical Lead"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C5V4D7Q6A",
+          "mode": "list",
+          "cachedResultName": "support-retention"
+        },
+        "text": "=📬 Team Routing Notification\n\nTicket: {{ $json.ticketId }}\nCustomer: {{ $json.customerName }}\nEmail: {{ $json.customerEmail }}\n\nCategory: {{ $json.category }}\nPriority: {{ $json.priority }}\nRoute: {{ $json.route }}\n\nReason: {{ $json.decisionReason || 'Ticket routed by business rules.' }}\n\nSummary:\n{{ $json.summary }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        -192,
+        1792
+      ],
+      "id": "54663e78-83da-479a-9649-32fe816fcaac",
+      "name": "customer_success_lead",
+      "webhookId": "f3f064cb-cc7f-47ac-acdc-dd564a670e8e",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integrationaction",
+              "name": "integrationAction",
+              "value": "team_notification",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationtarget",
+              "name": "integrationTarget",
+              "value": "support-retention",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -432,
+        1808
+      ],
+      "id": "8e025518-3b9c-4fed-81dc-3f3739bac0f3",
+      "name": "Prepare Slack Customer Success Lead"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Sales').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Sales').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Sales').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Sales').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack error' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        1248
+      ],
+      "id": "6dc186ea-a77a-454a-86fc-823e57a785be",
+      "name": "Set Slack Failure — Sales"
+    },
+    {
+      "parameters": {
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        544,
+        928
+      ],
+      "id": "5989628b-da13-49dc-b4bb-7cbb65c5ecb3",
+      "name": "Collect Integration Result"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Sales').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Sales').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Sales').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Sales').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        16,
+        1104
+      ],
+      "id": "c6cd9a98-6a36-44ce-bb20-a5a969ab0933",
+      "name": "Set Slack Success — Sales"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C5WTTEZB4",
+          "mode": "list",
+          "cachedResultName": "support-technical"
+        },
+        "text": "=📬 Team Routing Notification\n\nTicket: {{ $json.ticketId }}\nCustomer: {{ $json.customerName }}\nEmail: {{ $json.customerEmail }}\n\nCategory: {{ $json.category }}\nPriority: {{ $json.priority }}\nRoute: {{ $json.route }}\n\nReason: {{ $json.decisionReason || 'Ticket routed by business rules.' }}\n\nSummary:\n{{ $json.summary }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        -272,
+        1472
+      ],
+      "id": "7f01ee5e-5ae2-4896-9933-1c83163f45c6",
+      "name": "technical_lead",
+      "webhookId": "f3f064cb-cc7f-47ac-acdc-dd564a670e8e",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integrationaction",
+              "name": "integrationAction",
+              "value": "team_notification",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationtarget",
+              "name": "integrationTarget",
+              "value": "support-technical",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -480,
+        1472
+      ],
+      "id": "369a606b-dd10-4970-ad63-4c40a3608a8d",
+      "name": "Prepare Slack Technical Lead"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C5WU00H5Y",
+          "mode": "list",
+          "cachedResultName": "support-sales"
+        },
+        "text": "=📬 Team Routing Notification\n\nTicket: {{ $json.ticketId }}\nCustomer: {{ $json.customerName }}\nEmail: {{ $json.customerEmail }}\n\nCategory: {{ $json.category }}\nPriority: {{ $json.priority }}\nRoute: {{ $json.route }}\n\nReason: {{ $json.decisionReason || 'Ticket routed by business rules.' }}\n\nSummary:\n{{ $json.summary }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        -192,
+        1152
+      ],
+      "id": "ee0b5287-33c4-442d-90fc-759458e505a1",
+      "name": "sales",
+      "webhookId": "f3f064cb-cc7f-47ac-acdc-dd564a670e8e",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Customer Success Retention').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Customer Success Retention').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Customer Success Retention').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Customer Success Retention').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack error' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        976
+      ],
+      "id": "7f421277-d40e-4de9-af80-45e8f5e98094",
+      "name": "Set Slack Failure — Customer Success Retention"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integrationaction",
+              "name": "integrationAction",
+              "value": "team_notification",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationtarget",
+              "name": "integrationTarget",
+              "value": "support-sales",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -496,
+        1152
+      ],
+      "id": "39229fc8-6eb0-4e87-be9f-ae83e4cc3b8e",
+      "name": "Prepare Slack Sales"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Customer Success Retention').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Customer Success Retention').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Customer Success Retention').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Customer Success Retention').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        816
+      ],
+      "id": "a091d62f-b8d0-4374-bbe5-a369a8d038a0",
+      "name": "Set Slack Success — Customer Success Retention"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C5V4D7Q6A",
+          "mode": "list",
+          "cachedResultName": "support-retention"
+        },
+        "text": "=📬 Team Routing Notification\n\nTicket: {{ $json.ticketId }}\nCustomer: {{ $json.customerName }}\nEmail: {{ $json.customerEmail }}\n\nCategory: {{ $json.category }}\nPriority: {{ $json.priority }}\nRoute: {{ $json.route }}\n\nReason: {{ $json.decisionReason || 'Ticket routed by business rules.' }}\n\nSummary:\n{{ $json.summary }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        -192,
+        864
+      ],
+      "id": "461cef8e-f2b7-41fb-bffc-4736926fbea4",
+      "name": "customer_success_retention",
+      "webhookId": "f3f064cb-cc7f-47ac-acdc-dd564a670e8e",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integrationaction",
+              "name": "integrationAction",
+              "value": "team_notification",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationtarget",
+              "name": "integrationTarget",
+              "value": "support-retention",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -496,
+        848
+      ],
+      "id": "0db9df9e-99c9-41fe-8657-c829bdef4e47",
+      "name": "Prepare Slack Customer Success Retention"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack General Support').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack General Support').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack General Support').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack General Support').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack error' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        656
+      ],
+      "id": "ab11bf68-52bf-40d0-8ffc-7e1cafb554c8",
+      "name": "Set Slack Failure — General Support"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C5WTA6CLS",
+          "mode": "list",
+          "cachedResultName": "support-general"
+        },
+        "text": "=📬 Team Routing Notification\n\nTicket: {{ $json.ticketId }}\nCustomer: {{ $json.customerName }}\nEmail: {{ $json.customerEmail }}\n\nCategory: {{ $json.category }}\nPriority: {{ $json.priority }}\nRoute: {{ $json.route }}\n\nReason: {{ $json.decisionReason || 'Ticket routed by business rules.' }}\n\nSummary:\n{{ $json.summary }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        -192,
+        624
+      ],
+      "id": "c4242e4c-63a8-44df-86cc-171c366d2362",
+      "name": "general_support",
+      "webhookId": "f3f064cb-cc7f-47ac-acdc-dd564a670e8e",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integrationaction",
+              "name": "integrationAction",
+              "value": "team_notification",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationtarget",
+              "name": "integrationTarget",
+              "value": "support-general",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -496,
+        624
+      ],
+      "id": "be1eb6e7-610e-4f38-b12b-04f178b7e550",
+      "name": "Prepare Slack General Support"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack General Support').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack General Support').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack General Support').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack General Support').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        592
+      ],
+      "id": "fd680ee2-2141-4913-bc31-f42563fabc10",
+      "name": "Set Slack Success — General Support"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Billing').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Billing').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Billing').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Billing').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack error' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        464
+      ],
+      "id": "62306386-1747-41d2-9ee5-e26dc11b97a3",
+      "name": "Set Slack Failure — Billing"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C60NWS3EG",
+          "mode": "list",
+          "cachedResultName": "support-billing"
+        },
+        "text": "=📬 Team Routing Notification\n\nTicket: {{ $json.ticketId }}\nCustomer: {{ $json.customerName }}\nEmail: {{ $json.customerEmail }}\n\nCategory: {{ $json.category }}\nPriority: {{ $json.priority }}\nRoute: {{ $json.route }}\n\nReason: {{ $json.decisionReason || 'Ticket routed by business rules.' }}\n\nSummary:\n{{ $json.summary }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        -224,
+        416
+      ],
+      "id": "70ec33de-d416-4ca9-84e6-6268cb4be5f5",
+      "name": "billing_finance",
+      "webhookId": "f3f064cb-cc7f-47ac-acdc-dd564a670e8e",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integrationaction",
+              "name": "integrationAction",
+              "value": "team_notification",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationtarget",
+              "name": "integrationTarget",
+              "value": "support-billing",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -512,
+        416
+      ],
+      "id": "d4d6a7d0-b1a5-411c-ac36-ee71ce5d5aa3",
+      "name": "Prepare Slack Billing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Billing').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Billing').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Billing').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Billing').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        320
+      ],
+      "id": "0d804286-768b-4c2e-9dd6-7564b5e8321d",
+      "name": "Set Slack Success — Billing"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "technical_support",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "fb89ba40-9fd7-4364-aa27-d9a9bc30356c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "technical_support"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ebf93369-29c8-473b-a799-11d1b2695afe",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "billing_finance",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "billing_finance"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "10a473c6-f991-41bd-b216-a87976b78315",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "general_support",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "general_support"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "85a5d1e9-a45b-4ab6-80a1-532c5805ddb2",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "customer_success_retention",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "customer_success_retention"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9643f6d6-b2c9-4586-8246-97b1ca9c049f",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "sales",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "sales"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e381c884-c35d-404a-845a-8cd85b567323",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "technical_lead",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "technical_lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "08ae3df7-777b-4050-8227-bb543c7c33b8",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "customer_success_lead",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "customer_success_lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3c53623c-04a0-4dca-95c0-9b971e7e5059",
+                    "leftValue": "={{ $json.route }}",
+                    "rightValue": "support_manager",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "support_manager"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -960,
+        928
+      ],
+      "id": "5cf256ef-8b7f-46c9-85e0-e84f8491de89",
+      "name": "Route Notification Channel"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a5c92ca2-1512-40b8-ac53-3f6953d9b0ba",
+              "name": "notificationType",
+              "value": "team_routing",
+              "type": "string"
+            },
+            {
+              "id": "cf5094fd-d9c7-45e1-ba69-6e88b6e24f68",
+              "name": "notificationTarget",
+              "value": "={{ $json.route }}",
+              "type": "string"
+            },
+            {
+              "id": "71f2598a-2b5e-4bf7-848f-1768fca2fc56",
+              "name": "notificationMessage",
+              "value": "={{ 'Ticket ' + $json.ticketId + ' has been routed to ' + $json.route + '. Priority: ' + $json.priority }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -1312,
+        1024
+      ],
+      "id": "762664da-2629-4081-8c0d-3490fe8ce83b",
+      "name": "Prepare Team Routing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integrationaction",
+              "name": "integrationAction",
+              "value": "team_notification",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationtarget",
+              "name": "integrationTarget",
+              "value": "support-technical",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -528,
+        80
+      ],
+      "id": "ae78271b-b32c-4ac3-a1bc-570d39c6f783",
+      "name": "Prepare Slack Technical Support"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C5WTTEZB4",
+          "mode": "list",
+          "cachedResultName": "support-technical"
+        },
+        "text": "=📬 Team Routing Notification\n\nTicket: {{ $json.ticketId }}\nCustomer: {{ $json.customerName }}\nEmail: {{ $json.customerEmail }}\n\nCategory: {{ $json.category }}\nPriority: {{ $json.priority }}\nRoute: {{ $json.route }}\n\nReason: {{ $json.decisionReason || 'Ticket routed by business rules.' }}\n\nSummary:\n{{ $json.summary }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        -208,
+        80
+      ],
+      "id": "b6c0a0aa-c99e-49d8-9ac1-a5190cbcaf13",
+      "name": "technical_support",
+      "webhookId": "f3f064cb-cc7f-47ac-acdc-dd564a670e8e",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Technical Support').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Technical Support').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Technical Support').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Technical Support').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack error' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        160
+      ],
+      "id": "c709069c-bcfb-40b4-9bff-996d1791a7ac",
+      "name": "Set Slack Failure — Technical Support"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fixed-01-ticketid",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Technical Support').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-02-integration",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "fixed-03-integrationaction",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Technical Support').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-04-integrationtarget",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Technical Support').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-05-integrationstatus",
+              "name": "integrationStatus",
+              "value": "sent",
+              "type": "string"
+            },
+            {
+              "id": "fixed-06-attemptedat",
+              "name": "attemptedAt",
+              "value": "={{ $('Prepare Slack Technical Support').item.json.attemptedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-07-completedat",
+              "name": "completedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "fixed-08-errormessage",
+              "name": "errorMessage",
+              "value": "={{ null }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ad81c04d-08bc-412e-af02-9a657e9400c1",
+      "name": "Set Slack Success — Technical Support"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1584,
+        1024
+      ],
+      "id": "7aad3618-a533-46a1-ae4d-3c7ee6854f4d",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Prepare Team Routing": {
+      "main": [
+        [
+          {
+            "node": "Route Notification Channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Notification Channel": {
+      "main": [
+        [
+          {
+            "node": "Prepare Slack Technical Support",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Slack Billing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Slack General Support",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Slack Customer Success Retention",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Slack Sales",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Slack Technical Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Slack Customer Success Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Slack Support Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "billing_finance": {
+      "main": [
+        [
+          {
+            "node": "Set Slack Success — Billing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Slack Failure — Billing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "general_support": {
+      "main": [
+        [
+          {
+            "node": "Set Slack Success — General Support",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Slack Failure — General Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "customer_success_retention": {
+      "main": [
+        [
+          {
+            "node": "Set Slack Success — Customer Success Retention",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Slack Failure — Customer Success Retention",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "sales": {
+      "main": [
+        [
+          {
+            "node": "Set Slack Success — Sales",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Slack Failure — Sales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "technical_lead": {
+      "main": [
+        [
+          {
+            "node": "Set Slack Success — Technical Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Slack Failure — Technical Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "customer_success_lead": {
+      "main": [
+        [
+          {
+            "node": "Set Slack Success — Customer Success Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Slack Failure — Customer Success Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "support_manager": {
+      "main": [
+        [
+          {
+            "node": "Set Slack Success — Support Manager",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Slack Failure — Support Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "technical_support": {
+      "main": [
+        [
+          {
+            "node": "Set Slack Success — Technical Support",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Slack Failure — Technical Support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack Technical Support": {
+      "main": [
+        [
+          {
+            "node": "technical_support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack Billing": {
+      "main": [
+        [
+          {
+            "node": "billing_finance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack General Support": {
+      "main": [
+        [
+          {
+            "node": "general_support",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack Customer Success Retention": {
+      "main": [
+        [
+          {
+            "node": "customer_success_retention",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack Sales": {
+      "main": [
+        [
+          {
+            "node": "sales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack Technical Lead": {
+      "main": [
+        [
+          {
+            "node": "technical_lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack Customer Success Lead": {
+      "main": [
+        [
+          {
+            "node": "customer_success_lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack Support Manager": {
+      "main": [
+        [
+          {
+            "node": "support_manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Success — Customer Success Retention": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Success — Technical Support": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Failure — Technical Support": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Success — Billing": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Failure — Billing": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Success — General Support": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Failure — General Support": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Failure — Customer Success Retention": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Success — Sales": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Failure — Sales": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Success — Technical Lead": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Failure — Technical Lead": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Success — Customer Success Lead": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Failure — Customer Success Lead": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Success — Support Manager": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Slack Failure — Support Manager": {
+      "main": [
+        [
+          {
+            "node": "Collect Integration Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Prepare Team Routing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "8904d752-cdc3-404b-bcab-941fed91daf0",
+  "meta": {
+    "instanceId": "0d454c8add7f29d742c87508631e80ec019c98ca1bd7dcc0062ee24a0081d035"
+  },
+  "nodeGroups": [],
+  "id": "2dIoU7UyjSByfhyz",
+  "tags": []
+}

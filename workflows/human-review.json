@@ -1,0 +1,1302 @@
+{
+  "name": "NovaDesk - Human Review",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e35bf745-ab23-4429-9756-6c6756d3a40c",
+              "name": "humanReviewNotificationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "b255fac0-43b2-4217-8eaa-168ba12dfe97",
+              "name": "humanReviewNotificationFailedAt",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "1d4a9884-6120-4de3-9c2d-3994ee0b7aa3",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "295f1dfe-8167-4465-8893-8d883f78e05c",
+              "name": "integrationAction",
+              "value": "human_review_notification",
+              "type": "string"
+            },
+            {
+              "id": "ac23f54c-c021-406d-b1bc-b5c06dde32ce",
+              "name": "integrationTarget",
+              "value": "support-human-review",
+              "type": "string"
+            },
+            {
+              "id": "b1528150-1661-4485-8f1c-d33b5b39bd36",
+              "name": "integrationStatus",
+              "value": "failed",
+              "type": "string"
+            },
+            {
+              "id": "325660d8-a943-4833-97de-6af9d14006d0",
+              "name": "errorMessage",
+              "value": "={{ $json.error?.message || $json.message || 'Unknown Slack human review notification error' }}",
+              "type": "string"
+            },
+            {
+              "id": "04d2278d-21c0-4575-ae34-d3f418a42faa",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Human Review').item.json.ticketId }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4448,
+        -304
+      ],
+      "id": "67cb4a25-0d07-4322-b926-7473546c2092",
+      "name": "Set Human Review Notification Failed"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1d700141-b2fb-404f-8079-d571ec351652",
+              "name": "status",
+              "value": "waiting_human_review_notification_failed",
+              "type": "string"
+            },
+            {
+              "id": "46836a69-3266-4037-aa2d-705b407f0d62",
+              "name": "humanReviewRequired",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "b1634246-183c-4e58-a0c5-1540d567eb4f",
+              "name": "autoReplyAllowed",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "306e9aeb-a28d-4a6f-9636-dfd52bea2438",
+              "name": "decisionReason",
+              "value": "Human review is required, but the Slack review notification could not be delivered.",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4672,
+        -304
+      ],
+      "id": "aaf3dad3-66ec-4c2f-93fa-9c03cac6aa3f",
+      "name": "Set Human Review Notification Fallback"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C60NQCTE0",
+          "mode": "list",
+          "cachedResultName": "support-human-review"
+        },
+        "message": "=🚨 Human Review Required\n\nTicket: {{ $json.ticketId }}\nCustomer: {{ $json.customerName }}\nEmail: {{ $json.customerEmail }}\n\nCategory: {{ $json.category }}\nPriority: {{ $json.priority }}\nRoute: {{ $json.route }}\n\nReason: {{ $json.reviewReason }}\n\nSummary:\n{{ $json.summary }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "captureResponder": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        4224,
+        -496
+      ],
+      "id": "5f80c72e-7988-4ee5-ad95-094117f14b31",
+      "name": "Notify Human Review Queue",
+      "webhookId": "f3f064cb-cc7f-47ac-acdc-dd564a670e8e",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "alwaysOutputData": false,
+      "notesInFlow": false,
+      "credentials": {
+        "slackApi": {
+          "id": "oyVoV6pbNh5FBkUN",
+          "name": "NovaDesk Support"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "n7l0I1c6NB10irw6",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/n7l0I1c6NB10irw6",
+          "cachedResultName": "NovaDesk — Human Review & Approval"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "data_approved",
+            "ticketId",
+            "customerName",
+            "customerEmail",
+            "category",
+            "summary",
+            "route"
+          ],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        4672,
+        -496
+      ],
+      "name": "Call NovaDesk — Human Review & Approval",
+      "id": "ae633dc6-7e94-40f0-9616-b86de65ee52d"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "id": "ea905c87-5864-4c0e-a62e-4c7f69db714b",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        3776,
+        -496
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "10ef8fdf-5123-4057-9312-06ca7f6fb973",
+              "name": "integration",
+              "value": "slack",
+              "type": "string"
+            },
+            {
+              "id": "0350775b-2e65-43ea-99ee-59c09c614909",
+              "name": "integrationAction",
+              "value": "human_review_notification",
+              "type": "string"
+            },
+            {
+              "id": "f91ebd6b-1969-4fd5-9895-a7b4434e767b",
+              "name": "integrationTarget",
+              "value": "support-human-review",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4000,
+        -496
+      ],
+      "id": "669d6588-5560-4588-9ed6-32ae26ddd1ad",
+      "name": "Prepare Slack Human Review"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f0503420-0343-43c5-b9f7-f63028936c57",
+              "name": "ticketId",
+              "value": "={{ $('Prepare Slack Human Review').item.json.ticketId }}",
+              "type": "string"
+            },
+            {
+              "id": "1098fff8-e454-4fb6-81b8-f8cc81d269a1",
+              "name": "customerName",
+              "value": "={{ $('Prepare Slack Human Review').item.json.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "a2f85083-82c5-4674-b44e-79d97dc788d3",
+              "name": "customerEmail",
+              "value": "={{ $('Prepare Slack Human Review').item.json.customerEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "5c4be974-cc10-4dff-959f-26c664309446",
+              "name": "category",
+              "value": "={{ $('Prepare Slack Human Review').item.json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "3e186afa-86bc-4017-b635-3861635ff49b",
+              "name": "priority",
+              "value": "={{ $('Prepare Slack Human Review').item.json.priority }}",
+              "type": "string"
+            },
+            {
+              "id": "ea28b49a-5e94-4cc6-aaf3-f3d8bfcbafdd",
+              "name": "summary",
+              "value": "={{ $('Prepare Slack Human Review').item.json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "04c011ec-8193-45ed-a119-f20a06879a49",
+              "name": "route",
+              "value": "={{ $('Prepare Slack Human Review').item.json.route }}",
+              "type": "string"
+            },
+            {
+              "id": "d80dd1d8-3c61-4295-a65c-edceb242b5aa",
+              "name": "route",
+              "value": "={{ $('Prepare Slack Human Review').item.json.route }}",
+              "type": "string"
+            },
+            {
+              "id": "a25677e6-09d4-430a-9b48-2aca2ed3c0bf",
+              "name": "reviewReason",
+              "value": "={{ $('Prepare Slack Human Review').item.json.reviewReason }}",
+              "type": "string"
+            },
+            {
+              "id": "11871f22-237f-40bc-aed5-4562203542c9",
+              "name": "integration",
+              "value": "={{ $('Prepare Slack Human Review').item.json.integration }}",
+              "type": "string"
+            },
+            {
+              "id": "79fb759c-6fcd-43db-aa3d-c46902c49714",
+              "name": "integrationAction",
+              "value": "={{ $('Prepare Slack Human Review').item.json.integrationAction }}",
+              "type": "string"
+            },
+            {
+              "id": "728f5dd2-d96c-40d3-b684-b9419aedfd0f",
+              "name": "integrationTarget",
+              "value": "={{ $('Prepare Slack Human Review').item.json.integrationTarget }}",
+              "type": "string"
+            },
+            {
+              "id": "4e74cf95-69e5-47e2-91f3-e3d211ec4890",
+              "name": "data.approved",
+              "value": "={{ $json.data.approved }}",
+              "type": "string"
+            },
+            {
+              "id": "c058295c-46bb-45a2-81c0-d4d0cfa79f77",
+              "name": "data.responder.id",
+              "value": "={{ $json.data.responder.id }}",
+              "type": "string"
+            },
+            {
+              "id": "32aca43a-4ff3-48ab-ae61-87e900289b0a",
+              "name": "data.responder.name",
+              "value": "={{ $json.data.responder.name }}",
+              "type": "string"
+            },
+            {
+              "id": "6cb9bd92-235a-4d7c-9873-884d6cd3d582",
+              "name": "data.responder.source",
+              "value": "={{ $json.data.responder.source }}",
+              "type": "string"
+            },
+            {
+              "id": "a4f0506f-0083-4679-a856-ba1cda5305f6",
+              "name": "data.respondedAt",
+              "value": "={{ $json.data.respondedAt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4448,
+        -592
+      ],
+      "id": "ceb03591-a141-4fa8-b4de-f0c310eadae4",
+      "name": "Restore Human Review Context"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4hnWpGBxCwBz6oeH",
+          "mode": "list",
+          "cachedResultName": "support_ticket_audit",
+          "cachedResultUrl": "/projects/rurF5jkLGoYPPdmg/datatables/4hnWpGBxCwBz6oeH"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "ticketAuditKey",
+              "keyValue": "={{ $json.ticketId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lastUpdatedAt": "={{ $now.toISO() }}",
+            "humanReviewNotificationAt": "={{ $now.toISO() }}",
+            "humanReviewNotificationFailedAt": "={{ null }}",
+            "humanReviewNotificationStatus": "=sent"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "sentiment",
+              "displayName": "sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "businessImpact",
+              "displayName": "businessImpact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "confidence",
+              "displayName": "confidence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "route",
+              "displayName": "route",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "decisionReason",
+              "displayName": "decisionReason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditType",
+              "displayName": "auditType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplyAllowed",
+              "displayName": "autoReplyAllowed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewRequired",
+              "displayName": "humanReviewRequired",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "escalated",
+              "displayName": "escalated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditAt",
+              "displayName": "auditAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditSource",
+              "displayName": "auditSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "finalBusinessStatus",
+              "displayName": "finalBusinessStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "finalRoute",
+              "displayName": "finalRoute",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ticketAuditKey",
+              "displayName": "ticketAuditKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerName",
+              "displayName": "customerName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerEmail",
+              "displayName": "customerEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "receivedAt",
+              "displayName": "receivedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "responseType",
+              "displayName": "responseType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplied",
+              "displayName": "autoReplied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "replyPreparedAt",
+              "displayName": "replyPreparedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "firstResponseAt",
+              "displayName": "firstResponseAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditVersion",
+              "displayName": "auditVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewStatus",
+              "displayName": "humanReviewStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationStatus",
+              "displayName": "humanReviewNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewedById",
+              "displayName": "reviewedById",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationAt",
+              "displayName": "humanReviewNotificationAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewedBy",
+              "displayName": "reviewedBy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationFailedAt",
+              "displayName": "humanReviewNotificationFailedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewSource",
+              "displayName": "reviewSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedAt",
+              "displayName": "reviewedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4672,
+        -704
+      ],
+      "id": "f3c38248-e7a5-47de-889a-f616f85c9f6c",
+      "name": "Update Ticket Audit — Human Review Notification Success"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "4hnWpGBxCwBz6oeH",
+          "mode": "list",
+          "cachedResultName": "support_ticket_audit",
+          "cachedResultUrl": "/projects/rurF5jkLGoYPPdmg/datatables/4hnWpGBxCwBz6oeH"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "ticketAuditKey",
+              "keyValue": "={{ $json.ticketId }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "={{ $json.status }}",
+            "humanReviewRequired": "={{ $json.humanReviewRequired }}",
+            "autoReplyAllowed": "={{ $json.autoReplyAllowed }}",
+            "decisionReason": "={{ $json.decisionReason }}",
+            "finalBusinessStatus": "={{ $json.status }}",
+            "lastUpdatedAt": "={{ $now.toISO() }}",
+            "humanReviewNotificationStatus": "={{ \"failed\" }}",
+            "humanReviewNotificationAt": "={{ null }}",
+            "humanReviewNotificationFailedAt": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "priority",
+              "displayName": "priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "sentiment",
+              "displayName": "sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "businessImpact",
+              "displayName": "businessImpact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "confidence",
+              "displayName": "confidence",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "route",
+              "displayName": "route",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "decisionReason",
+              "displayName": "decisionReason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "auditType",
+              "displayName": "auditType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplyAllowed",
+              "displayName": "autoReplyAllowed",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewRequired",
+              "displayName": "humanReviewRequired",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "escalated",
+              "displayName": "escalated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditAt",
+              "displayName": "auditAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditSource",
+              "displayName": "auditSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "finalBusinessStatus",
+              "displayName": "finalBusinessStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "finalRoute",
+              "displayName": "finalRoute",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ticketAuditKey",
+              "displayName": "ticketAuditKey",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerName",
+              "displayName": "customerName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "customerEmail",
+              "displayName": "customerEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "receivedAt",
+              "displayName": "receivedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "responseType",
+              "displayName": "responseType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "autoReplied",
+              "displayName": "autoReplied",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "replyPreparedAt",
+              "displayName": "replyPreparedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "firstResponseAt",
+              "displayName": "firstResponseAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "auditVersion",
+              "displayName": "auditVersion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "lastUpdatedAt",
+              "displayName": "lastUpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "humanReviewStatus",
+              "displayName": "humanReviewStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationStatus",
+              "displayName": "humanReviewNotificationStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewedById",
+              "displayName": "reviewedById",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationAt",
+              "displayName": "humanReviewNotificationAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewedBy",
+              "displayName": "reviewedBy",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "humanReviewNotificationFailedAt",
+              "displayName": "humanReviewNotificationFailedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "reviewSource",
+              "displayName": "reviewSource",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "reviewedAt",
+              "displayName": "reviewedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4896,
+        -304
+      ],
+      "id": "2ee6d62f-4e56-4f56-9615-0b09b635b8c8",
+      "name": "Update Ticket Audit — Human Review Notification Failed"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Notify Human Review Queue": {
+      "main": [
+        [
+          {
+            "node": "Restore Human Review Context",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set Human Review Notification Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Human Review Notification Failed": {
+      "main": [
+        [
+          {
+            "node": "Set Human Review Notification Fallback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Human Review Notification Fallback": {
+      "main": [
+        [
+          {
+            "node": "Update Ticket Audit — Human Review Notification Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Prepare Slack Human Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Slack Human Review": {
+      "main": [
+        [
+          {
+            "node": "Notify Human Review Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restore Human Review Context": {
+      "main": [
+        [
+          {
+            "node": "Call NovaDesk — Human Review & Approval",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Ticket Audit — Human Review Notification Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "54d87748-a7b0-47cf-9cee-553802f9477d",
+  "meta": {
+    "instanceId": "0d454c8add7f29d742c87508631e80ec019c98ca1bd7dcc0062ee24a0081d035"
+  },
+  "nodeGroups": [],
+  "id": "DalbIGgXOdh4HjMf",
+  "tags": []
+}
